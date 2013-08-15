@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+	<title>Raspberry Pi Playground</title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+		var updateOut1 = function(value) {
+			console.log(value)
+			if (value) {
+				$('.out1 .led').addClass('green');
+			}
+			else {
+				$('.out1 .led').removeClass('green');
+			}
+		};
+
+		$(document).ready(function() {
+			$('button[data-action="update"]', function() {
+				$.ajax({
+					type: 'GET',
+					url: 'out/',
+					success: function(data) {
+						updateOut1(data.value);
+					}
+				})
+			});
+
+			$('button[data-action="on"]').click(function() {
+				$.ajax({
+					type: 'PUT',
+					url: '/out/',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						value: '1'
+					}),
+					success: function(data) {
+						updateOut1(data.value);
+					}
+				});
+			});
+
+			$('button[data-action="off"]').click(function() {
+				console.log('You make me so cold.');
+			});
+		});
+	</script>
+</head>
+<body>
+	<!--<h1>Greetings from {{planet}}!</h1>-->
+
+	<div class="out1">
+		<div class="led"></div>
+		<div class="controls">
+			<button data-action="update">Update</button>
+			<button data-action="on">On</button>
+			<button data-action="off">Off</button>
+		</div>
+	</div>
+</body>
+</html>

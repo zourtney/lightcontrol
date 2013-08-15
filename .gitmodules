@@ -1,0 +1,3 @@
+[submodule "gpiocrust"]
+	path = gpiocrust
+	url = https://github.com/zourtney/gpiocrust.git
