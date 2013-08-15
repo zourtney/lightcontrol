@@ -4,57 +4,50 @@
 	<link rel="stylesheet" href="style.css" />
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript">
-		var updateOut1 = function(value) {
-			console.log(value)
-			if (value) {
-				$('.out1 .led').addClass('green');
-			}
-			else {
-				$('.out1 .led').removeClass('green');
-			}
+		var ON = 0,
+		    OFF = 1;
+
+		var showLightStatus = function(e, value) {
+			e.data('value', value);
+			e[value === ON ? 'addClass' : 'removeClass']('on');
 		};
 
 		$(document).ready(function() {
-			$('button[data-action="update"]', function() {
-				$.ajax({
-					type: 'GET',
-					url: 'out/',
-					success: function(data) {
-						updateOut1(data.value);
-					}
-				})
-			});
-
-			$('button[data-action="on"]').click(function() {
-				$.ajax({
-					type: 'PUT',
-					url: '/out/',
-					contentType: 'application/json',
-					data: JSON.stringify({
-						value: '1'
-					}),
-					success: function(data) {
-						updateOut1(data.value);
-					}
+			// Initialize all lights
+			$.each([1, 2, 3, 4], function(index, val) {
+				$.get('/outlet/' + val, function(data) {
+					showLightStatus($('.outlet[data-id="' + val + '"]'), data.value);
 				});
 			});
 
-			$('button[data-action="off"]').click(function() {
-				console.log('You make me so cold.');
+			// Set up click listeners on each
+			$('.outlet').on('click', function(e) {
+				var e = $(e.currentTarget);
+				$.ajax({
+					type: 'PUT',
+					url: '/outlet/' + e.data('id') + '/',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						id: e.data('id'),
+						value: e.data('value') === ON ? OFF : ON
+					}),
+					success: function(data) {
+						showLightStatus(e, data.value);
+					}
+				});
 			});
 		});
 	</script>
 </head>
 <body>
 	<!--<h1>Greetings from {{planet}}!</h1>-->
-
-	<div class="out1">
-		<div class="led"></div>
-		<div class="controls">
-			<button data-action="update">Update</button>
-			<button data-action="on">On</button>
-			<button data-action="off">Off</button>
-		</div>
+	<div class="socket">
+		<div class="outlet" data-id="1"></div>
+		<div class="outlet" data-id="2"></div>
+	</div>
+	<div class="socket">
+		<div class="outlet" data-id="3"></div>
+		<div class="outlet" data-id="4"></div>
 	</div>
 </body>
 </html>

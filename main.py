@@ -6,9 +6,12 @@ from gpiocrust import Header, OutputPin#, PWMOutputPin, InputPin
 
 # Set up Raspberry Pi I/O
 header = Header()
-out1 = OutputPin(11)
-#out2 = PWMOutputPin(13)
-#in1 = InputPin(15)
+out = {
+    1: OutputPin(15),
+    2: OutputPin(13),
+    3: OutputPin(12),
+    4: OutputPin(11)
+}
 
 
 # Super simple web service
@@ -22,15 +25,18 @@ API
 
 """
 
-@app.route('/out/', methods=['GET'])
-def get_out1():
-  return jsonify(name='out1', value=out1.value)
+@app.route('/outlet/<num>/', methods=['GET'])
+def get_out(num):
+  pin = out[int(num)]
+  return jsonify(id=int(num), value=pin.value)
 
-@app.route('/out/', methods=['PUT'])
-def set_out1():
+@app.route('/outlet/<num>/', methods=['PUT'])
+def set_out(num):
+  pin = out[int(num)]
   requestJson = json.loads(request.data)
-  out1.value = int(requestJson['value'])
-  return jsonify(name='out1', value=out1.value)
+  pin.value = int(requestJson['value'])
+  return jsonify(id=int(num), value=pin.value)
+
 """
 
 @app.route('/pwm/')
