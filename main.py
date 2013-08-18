@@ -1,8 +1,8 @@
-#import copy
-#from time import sleep
+#!/usr/bin/env python
+
 import json
 from flask import Flask, jsonify, render_template, request
-from gpiocrust import Header, OutputPin#, PWMOutputPin, InputPin
+from gpiocrust import Header, OutputPin
 
 # Set up Raspberry Pi I/O
 header = Header()
@@ -24,7 +24,6 @@ app.debug = True
 API
 
 """
-
 @app.route('/outlet/<num>/', methods=['GET'])
 def get_out(num):
   pin = out[int(num)]
@@ -37,19 +36,6 @@ def set_out(num):
   pin.value = int(requestJson['value'])
   return jsonify(id=int(num), value=pin.value)
 
-"""
-
-@app.route('/pwm/')
-def get_out2():
-  return jsonify(name='out2', value=out2.value)
-
-@app.route('/pwm/<val>')
-def set_out2(val):
-  out2.value = float(val)
-  return jsonify(name='out2', value=out2.value)
-"""
-
-
 
 
 """
@@ -59,7 +45,7 @@ Pages
 """
 @app.route('/')
 def index():
-  return render_template('index.html', planet='Abydos')
+  return render_template('index.html')
 
 # Entry point
 if __name__ == '__main__':
