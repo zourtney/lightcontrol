@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-	<title>Raspberry Pi Playground</title>
+	<title>LightControl</title>
 	<meta id="viewport" name="viewport" content="user-scalable=no, width=device-width, height=device-height" />
 	<link rel="stylesheet" href="style.css" />
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -15,10 +15,10 @@
 
 		$(document).ready(function() {
 			// Initialize all lights
-			$.each([1, 2, 3, 4], function(index, val) {
-				$.get('/outlet/' + val, function(data) {
-					showLightStatus($('.outlet[data-id="' + val + '"]'), data.value);
-				});
+			$.get('/outlets/', function(data) {
+				for (var i = 0; i < data.length; i++) {
+					showLightStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
+				}
 			});
 
 			// Set up click listeners on each
@@ -26,7 +26,7 @@
 				var e = $(e.currentTarget);
 				$.ajax({
 					type: 'PUT',
-					url: '/outlet/' + e.data('id') + '/',
+					url: '/outlets/' + e.data('id') + '/',
 					contentType: 'application/json',
 					data: JSON.stringify({
 						id: e.data('id'),
@@ -39,20 +39,25 @@
 			});
 
 			$('.switch.all-on, .switch.all-off').on('click', function(e) {
-				for (var i = 1; i < 5; i++) {
-					$.ajax({
-						type: 'PUT',
-						url: '/outlet/' + i + '/',
-						contentType: 'application/json',
-						data: JSON.stringify({
-							id: i,
-							value: $(e.currentTarget).hasClass('all-on') ? ON : OFF
-						}),
-						success: function(data) {
-							showLightStatus($('.outlet[data-id="' + data.id + '"]'), data.value);
+				var val = $(e.currentTarget).hasClass('all-on') ? ON : OFF;
+
+				$.ajax({
+					type: 'PUT',
+					url: '/outlets/',
+					contentType: 'application/json',
+					data: JSON.stringify([
+						{id: 1, value: val},
+						{id: 2, value: val},
+						{id: 3, value: val},
+						{id: 4, value: val}
+					]),
+					success: function(data) {
+						debugger;
+						for (var i = 0; i < data.length; i++) {
+							showLightStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 						}
-					});
-				}
+					}
+				});
 			});
 		});
 	</script>
