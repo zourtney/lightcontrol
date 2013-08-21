@@ -52,7 +52,6 @@
 						{id: 4, value: val}
 					]),
 					success: function(data) {
-						debugger;
 						for (var i = 0; i < data.length; i++) {
 							showLightStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 						}

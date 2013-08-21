@@ -15,7 +15,7 @@ out = {
 
 
 # Super simple web service
-app = Flask(__name__, static_folder='templates', static_url_path='')
+app = Flask(__name__, static_folder='static', static_url_path='')
 app.debug = True
 
 
@@ -25,7 +25,7 @@ app.debug = True
 Single outlet API
 
 """
-def serialize_outlet(num):
+def serialize_one(num):
   outlet = out[int(num)]
   return {
     'id': int(num),
@@ -34,14 +34,14 @@ def serialize_outlet(num):
 
 @app.route('/outlets/<num>/', methods=['GET'])
 def get_out(num):
-  return jsonify(serialize_outlet(num))
+  return jsonify(serialize_one(num))
 
 @app.route('/outlets/<num>/', methods=['PUT'])
 def set_out(num):
   pin = out[int(num)]
   requestJson = json.loads(request.data)
   pin.value = int(requestJson['value'])
-  return jsonify(serialize_outlet(num))
+  return jsonify(serialize_one(num))
 
 
 
@@ -52,10 +52,10 @@ Batch API
 """
 def serialize_all():
   return [
-    serialize_outlet(1),
-    serialize_outlet(2),
-    serialize_outlet(3),
-    serialize_outlet(4)
+    serialize_one(1),
+    serialize_one(2),
+    serialize_one(3),
+    serialize_one(4)
   ]
 
 @app.route('/outlets/', methods=['GET'])
