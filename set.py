@@ -22,7 +22,7 @@ def usage():
   print(' -2, --top-right           Set the top-right socket (2) value. Use "true" or "false".')
   print(' -3, --bottom-right        Set the bottom-right socket (3) value. Use "true" or "false".')
   print(' -h, --help                View usage')
-  print('Sample usage:   %s -0 true --bottom_right=false' % (sys.argv[0]))
+  print('Sample usage:   %s -0 t --bottom-right=false' % (sys.argv[0]))
 
 
 def update_switch_data(data, opts):
