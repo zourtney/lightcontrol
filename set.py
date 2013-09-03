@@ -17,10 +17,10 @@ def print_message(msg, overwrite=False):
 def usage():
   print('Usage: %s [-<socket> <value>] [--<long_socket>=<value>]' % (sys.argv[0]))
   print(' -d, --destination         Specify the server destination. Default is http://localhost:5000/outlets/.')
-  print(' -0, --top_left            Set the upper-left socket (0) value. Use "true" or "false".')
-  print(' -1, --bottom_left         Set the bottom-left socket (1) value. Use "true" or "false".')
-  print(' -2, --top_right           Set the top-right socket (2) value. Use "true" or "false".')
-  print(' -3, --bottom_right        Set the bottom-right socket (3) value. Use "true" or "false".')
+  print(' -0, --top-left            Set the upper-left socket (0) value. Use "true" or "false".')
+  print(' -1, --bottom-left         Set the bottom-left socket (1) value. Use "true" or "false".')
+  print(' -2, --top-right           Set the top-right socket (2) value. Use "true" or "false".')
+  print(' -3, --bottom-right        Set the bottom-right socket (3) value. Use "true" or "false".')
   print(' -h, --help                View usage')
   print('Sample usage:   %s -0 true --bottom_right=false' % (sys.argv[0]))
 
@@ -43,7 +43,7 @@ def update_switch_data(data, opts):
 def main(argv):
   try:
     url = 'http://localhost:5000/outlets/'
-    opts, args = getopt.getopt(argv, 'hd:0:1:2:3:', ['help', 'destination=', 'top_left=', 'bottom_left=', 'top_right=', 'bottom_right='])
+    opts, args = getopt.getopt(argv, 'hd:0:1:2:3:', ['help', 'destination=', 'top-left=', 'bottom-left=', 'top-right=', 'bottom-right='])
 
     for o, a in opts:
       if o in ('-h', '--help'):
