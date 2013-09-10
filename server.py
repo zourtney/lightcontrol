@@ -2,21 +2,21 @@
 
 import json
 from flask import Flask, jsonify, render_template, request, make_response
-from gpiocrust import Header, OutputPin
+from controller import Outlets
 
-# Set up Raspberry Pi I/O
-header = Header()
-out = {
-    1: OutputPin(15),
-    2: OutputPin(13),
-    3: OutputPin(12),
-    4: OutputPin(11)
-}
 
+
+outlets = Outlets()
 
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.debug = True
+
+
+
+
+
+
 
 
 
@@ -25,23 +25,17 @@ app.debug = True
 Single outlet API
 
 """
-def serialize_one(num):
-  outlet = out[int(num)]
-  return {
-    'id': int(num),
-    'value': outlet.value
-  }
-
 @app.route('/outlets/<num>/', methods=['GET'])
 def get_out(num):
-  return jsonify(serialize_one(num))
+  return jsonify(outlets[num].serialize())
 
-@app.route('/outlets/<num>/', methods=['PUT'])
-def set_out(num):
-  pin = out[int(num)]
-  requestJson = json.loads(request.data)
-  pin.value = int(requestJson['value'])
-  return jsonify(serialize_one(num))
+#@app.route('/outlets/<num>/', methods=['PUT'])
+#def set_out(num):
+#  pin = out[int(num)]
+#  requestJson = json.loads(request.data)
+#  pin.value = int(requestJson['value'])
+#  save_settings();
+#  return jsonify(serialize_one(num))
 
 
 
@@ -50,27 +44,20 @@ def set_out(num):
 Batch API
 
 """
-def serialize_all():
-  return [
-    serialize_one(1),
-    serialize_one(2),
-    serialize_one(3),
-    serialize_one(4)
-  ]
-
 @app.route('/outlets/', methods=['GET'])
 def get_all():
-  resp = make_response(json.dumps(serialize_all()))
+  resp = make_response(json.dumps(outlets.serialize()))
   resp.mimetype = 'application/json'
   return resp
 
-@app.route('/outlets/', methods=['PUT'])
-def set_all():
-  for outlet in json.loads(request.data):
-    out[int(outlet['id'])].value = outlet['value']
-  resp = make_response(json.dumps(serialize_all()))
-  resp.mimetype = 'application/json'
-  return resp
+#@app.route('/outlets/', methods=['PUT'])
+#def set_all():
+#  for outlet in json.loads(request.data):
+#    out[int(outlet['id'])].value = outlet['value']
+#  resp = make_response(json.dumps(serialize_all()))
+#  resp.mimetype = 'application/json'
+#  save_settings()
+#  return resp
 
 
 
