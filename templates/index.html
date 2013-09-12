@@ -16,7 +16,7 @@
 		$(document).ready(function() {
 			// Initialize all lights
 			$.get('/outlets/', function(data) {
-				for (var i = 0; i < data.length; i++) {
+				for (var i in data) {
 					showLightStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 				}
 			});
@@ -45,14 +45,14 @@
 					type: 'PUT',
 					url: '/outlets/',
 					contentType: 'application/json',
-					data: JSON.stringify([
-						{id: 1, value: val},
-						{id: 2, value: val},
-						{id: 3, value: val},
-						{id: 4, value: val}
-					]),
+					data: JSON.stringify({
+						1: {value: val},
+						2: {value: val},
+						3: {value: val},
+						4: {value: val}
+					}),
 					success: function(data) {
-						for (var i = 0; i < data.length; i++) {
+						for (var i in data) {
 							showLightStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 						}
 					}

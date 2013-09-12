@@ -16,10 +16,6 @@ app.debug = True
 
 
 
-
-
-
-
 """
 
 Single outlet API
@@ -29,13 +25,13 @@ Single outlet API
 def get_out(num):
   return jsonify(outlets[num].serialize())
 
-#@app.route('/outlets/<num>/', methods=['PUT'])
-#def set_out(num):
-#  pin = out[int(num)]
-#  requestJson = json.loads(request.data)
-#  pin.value = int(requestJson['value'])
-#  save_settings();
-#  return jsonify(serialize_one(num))
+@app.route('/outlets/<num>/', methods=['PUT'])
+def set_out(num):
+  pin = outlets[num]
+  requestJson = json.loads(request.data)
+  pin.value = int(requestJson['value'])
+  outlets.save()
+  return jsonify(outlets[num].serialize())
 
 
 
@@ -50,14 +46,14 @@ def get_all():
   resp.mimetype = 'application/json'
   return resp
 
-#@app.route('/outlets/', methods=['PUT'])
-#def set_all():
-#  for outlet in json.loads(request.data):
-#    out[int(outlet['id'])].value = outlet['value']
-#  resp = make_response(json.dumps(serialize_all()))
-#  resp.mimetype = 'application/json'
-#  save_settings()
-#  return resp
+@app.route('/outlets/', methods=['PUT'])
+def set_all():
+  for k, v in json.loads(request.data).iteritems():
+    outlets[k].value = v['value']
+  outlets.save()
+  resp = make_response(json.dumps(outlets.serialize()))
+  resp.mimetype = 'application/json'
+  return resp
 
 
 
