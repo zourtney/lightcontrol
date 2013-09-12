@@ -29,13 +29,13 @@ def update_switch_data(data, opts):
   for o, a in opts:
     val = 0 if 't' in str(a).lower() else 1
     if o == '-0' or o == '--top-left':
-      data[0]['value'] = val
+      data['1']['value'] = val
     elif o == '-1' or o == '--bottom-left':
-      data[1]['value'] = val
+      data['2']['value'] = val
     elif o == '-2' or o == '--top-right':
-      data[2]['value'] = val
+      data['3']['value'] = val
     elif o == '-3' or o == '--bottom-right':
-      data[3]['value'] = val
+      data['4']['value'] = val
   return data
 
   
