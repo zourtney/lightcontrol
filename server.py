@@ -4,15 +4,12 @@ import json
 from flask import Flask, jsonify, render_template, request, make_response
 from controller import Outlets
 
-
-
-outlets = Outlets()
-
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.debug = True
 
-
+# Pin control
+outlets = Outlets()
 
 
 
