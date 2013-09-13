@@ -39,18 +39,14 @@ Batch API
 """
 @app.route('/outlets/', methods=['GET'])
 def get_all():
-  resp = make_response(json.dumps(outlets.serialize()))
-  resp.mimetype = 'application/json'
-  return resp
+  return jsonify(outlets.serialize())
 
 @app.route('/outlets/', methods=['PUT'])
 def set_all():
   for k, v in json.loads(request.data).iteritems():
     outlets[k].value = v['value']
   outlets.save()
-  resp = make_response(json.dumps(outlets.serialize()))
-  resp.mimetype = 'application/json'
-  return resp
+  return jsonify(outlets.serialize())
 
 
 
