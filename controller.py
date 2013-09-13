@@ -1,9 +1,29 @@
 import json
 from gpiocrust import Header, OutputPin
+from crontab import CronTab
 
 SETTINGS_FILE = 'settings.json'
 
+class Scheduler(object):
+  """Manager object for outlet cron jobs"""
+  def __init__(self):
+    self._cron = CronTab('root')
+
+  def jobs(self):
+    jobs = []
+    for job in self._cron.find_command('client.py'):
+      print job.schedule().get_next()
+      jobs.append({
+        'time': str(job.render_time()),
+        'command': str(job.command),
+        'enabled': job.is_enabled()
+      })
+    return jobs
+
+
+
 class Outlet(OutputPin):
+  """A single output pin"""
   def __init__(self, id, pin, value=0, initial=None):
     super(Outlet, self).__init__(pin, value=value)
     self._id = id
@@ -17,7 +37,10 @@ class Outlet(OutputPin):
       'initial': self._initial
     }
 
+
+
 class Outlets(object):
+  """Manager object for a collection of outlets"""
   def __init__(self, settings_file=SETTINGS_FILE):
     self._header = Header()
     self._settings_filename = settings_file

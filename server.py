@@ -2,7 +2,7 @@
 
 import json
 from flask import Flask, jsonify, render_template, request, make_response
-from controller import Outlets
+from controller import Outlets, Scheduler
 
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
@@ -10,6 +10,7 @@ app.debug = True
 
 # Pin control
 outlets = Outlets()
+scheduler = Scheduler()
 
 
 
@@ -47,6 +48,19 @@ def set_all():
     outlets[k].value = v['value']
   outlets.save()
   return jsonify(outlets.serialize())
+
+
+
+"""
+
+Cron
+
+"""
+@app.route('/schedule', methods=['GET'])
+def get_schedule():
+  resp = make_response(json.dumps(scheduler.jobs()))
+  resp.mimetype = 'application/json'
+  return resp
 
 
 
