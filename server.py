@@ -58,7 +58,7 @@ Cron
 """
 @app.route('/schedule', methods=['GET'])
 def get_schedule():
-  resp = make_response(json.dumps(scheduler.jobs()))
+  resp = make_response(json.dumps(scheduler.jobs, indent=4))
   resp.mimetype = 'application/json'
   return resp
 

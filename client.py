@@ -5,6 +5,12 @@ import requests
 import getopt
 import json
 
+# !!!!
+#
+#TODO: reimplement using argparse
+# http://docs.python.org/2/library/argparse.html#module-argparse
+#
+# !!!!
 
 def print_message(msg, overwrite=False):
   if overwrite:
