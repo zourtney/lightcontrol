@@ -1,3 +1,4 @@
+import os
 import json
 from gpiocrust import Header, OutputPin
 from crontab import CronTab
@@ -5,13 +6,18 @@ import getopt
 import shlex
 
 SETTINGS_FILE = 'settings.json'
+CRON_APP_ID = 'lightcontrol'
 
 class Scheduler(object):
-  """Manager object for outlet cron jobs"""
   def __init__(self):
-    self._cron = CronTab('root')
+    self.refresh()
 
-  def _get_outlets_for_job(self, job):
+  def refresh(self):
+    self._crontab = CronTab('root')
+    self._get_jobs()
+
+  """Manager object for outlet cron jobs"""
+  def _get_outlets_for_cron(self, job):
     argv = shlex.split(str(job.command))
     opts, args = getopt.getopt(argv[1:], 'hd:0:1:2:3:', ['help', 'destination=', 'top-left=', 'bottom-left=', 'top-right=', 'bottom-right='])
     data = {}
@@ -27,18 +33,48 @@ class Scheduler(object):
         data['3'] = val
     return data
 
+  def _get_jobs(self):
+    self._jobs = []
+    for cron in self._crontab:
+      meta = cron.meta().lower()
+      i = meta.find(CRON_APP_ID)
+      if i >= 0:
+        self._jobs.append({
+          'name': meta[i + len(CRON_APP_ID):].strip(),
+          'outlets': self._get_outlets_for_cron(cron),
+          'enabled': cron.is_enabled(),
+          'next': str(cron.schedule().get_next()),
+          'cron': str(cron.render_time())
+        })
+    return self._jobs
+  
   @property
   def jobs(self):
-    jobs = []
-    for job in self._cron.find_command('client.py'):
-      jobs.append({
-        'outlets': self._get_outlets_for_job(job),
-        'enabled': job.is_enabled(),
-        'next': str(job.schedule().get_next()),
-        'cron': str(job.render_time())
-      })
-    return jobs
+    return self._jobs
 
+  def job_by_name(self, name):
+    for job in self._jobs:
+      if job['name'] == name:
+        return job
+    return None
+
+  def save(self):
+    # Remove old lightcontrol cron jobs
+    crontab = self._crontab
+    old_crons = [cron for cron in crontab if CRON_APP_ID in cron.meta()]
+    while len(old_crons):
+      crontab.remove(old_crons.pop())
+
+    # Add new ones
+    client_exe = '%s/client.py' % os.path.dirname(os.path.realpath(__file__)) 
+    for job in self._jobs:
+      exe = client_exe
+      for k, v in job['outlets'].iteritems():
+        exe += ' -%s %s' % (k, 't' if v['value'] == 0 else 'f')
+      
+      cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
+      cron.set_slices(job['cron'].split(' '))
+    crontab.write()
 
 
 class Outlet(OutputPin):

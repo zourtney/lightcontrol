@@ -56,11 +56,18 @@ def set_all():
 Cron
 
 """
-@app.route('/schedule', methods=['GET'])
+@app.route('/schedules/', methods=['GET'])
 def get_schedule():
+  scheduler.refresh()
   resp = make_response(json.dumps(scheduler.jobs, indent=4))
   resp.mimetype = 'application/json'
+  #scheduler.save()
   return resp
+
+@app.route('/schedules/<name>', methods=['GET'])
+def get_one_schedule(name):
+  scheduler.refresh()
+  return jsonify(scheduler.job_by_name(name))  #TODO: or 404
 
 
 
