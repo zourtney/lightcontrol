@@ -2,15 +2,24 @@
 <head>
 	<title>LightControl</title>
 	<meta id="viewport" name="viewport" content="user-scalable=no, width=device-width, height=device-height" />
-	<link rel="stylesheet" href="style.css" />
+	<link href="http://bootswatch.com/cosmo/bootstrap.min.css" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+</head>
+<body>
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		var ON = 0,
 		    OFF = 1;
 
 		var showLightStatus = function(e, value) {
 			e.data('value', value);
-			e[value === ON ? 'addClass' : 'removeClass']('on');
+			if (value === ON) {
+				e.addClass('btn-success');
+			}
+			else {
+				e.removeClass('btn-success');
+			}
 		};
 
 		$(document).ready(function() {
@@ -58,24 +67,62 @@
 					}
 				});
 			});
+
+
+			$.get('/schedules/', function(data) {
+				var $schedules = $('table.schedules'),
+						s;
+
+				for (var i = 0; i < data.length; i++) {
+					s = data[i];
+
+					var outlets = '';
+					for (var j in s.outlets) {
+						outlets += j + '=' + (s.outlets[j].value === ON ? 'on' : 'off') + ';';
+					}
+
+					$schedules.append(
+						'<tr><td>' + s.name +
+            '</td><td>' + s.cron +
+            '</td><td>' + outlets +
+            '</td><td>' + s.enabled +
+            '</td><td>' + s.next +
+            '</td></tr>'
+					);
+				}
+			});
+
 		});
 	</script>
-</head>
-<body>
-	<!--<h1>Greetings from {{planet}}!</h1>-->
-	<div class="group individual">
-		<div class="row">
-			<div class="outlet" data-id="1"></div>
-			<div class="outlet" data-id="3"></div>
+
+	<div class="container">
+		<h1>Outlets</h1>
+		<div class="row outlet-control">
+			<button class="outlet btn btn-large" data-id="1">1</button>
+			<button class="outlet btn btn-large" data-id="3">3</button>
 		</div>
-		<div class="row">
-			<div class="outlet" data-id="2"></div>
-			<div class="outlet" data-id="4"></div>
+		<div class="row outlet-control">
+			<button class="outlet btn btn-large" data-id="2">2</button>
+			<button class="outlet btn btn-large" data-id="4">4</button>
+		</div>
+		<div class="row outlet-control">
+			<button type="button" class="btn btn-primary switch all-on">All on</button>
+			<button type="button" class="btn switch all-off">All off</button>
 		</div>
 	</div>
-	<div class="group all">
-		<button class="switch all-on">All on</button>
-		<button class="switch all-off">All off</button>
+	<div class="container">
+		<h1>Schedule</h1>
+		<table class="schedules table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Cron</th>
+					<th>Outlets</th>
+					<th>Enabled</th>
+					<th>Next</th>
+				</tr>
+			</thead>
+		</table>
 	</div>
 </body>
 </html>
