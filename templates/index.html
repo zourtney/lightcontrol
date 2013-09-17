@@ -108,10 +108,10 @@
 		  	$('#schedule-name').val(s.name);
 		  	$('#schedule-cron').val(s.cron);
 		  	$('#schedule-enabled').prop('checked', s.enabled);
-		  	$('#schedule-outlet-1').val(outletValue(0));
-		  	$('#schedule-outlet-2').val(outletValue(1));
-		  	$('#schedule-outlet-3').val(outletValue(2));
-		  	$('#schedule-outlet-4').val(outletValue(3));
+		  	$('#schedule-outlet-0').val(outletValue(0));
+		  	$('#schedule-outlet-1').val(outletValue(1));
+		  	$('#schedule-outlet-2').val(outletValue(2));
+		  	$('#schedule-outlet-3').val(outletValue(3));
 
 		  	// Bind to buttons
 		  	$('.schedule-details [data-action="save-schedule"]').on('click', function() {
@@ -125,10 +125,10 @@
 			  			cron: $('#schedule-cron').val(),
 			  			enabled: $('#schedule-enabled').prop('checked'),
 			  			outlets: {
-			  				0: {value: $('#schedule-outlet-1').val() || null},
-			  				1: {value: $('#schedule-outlet-2').val() || null},
-			  				2: {value: $('#schedule-outlet-3').val() || null},
-			  				3: {value: $('#schedule-outlet-4').val() || null}
+			  				0: {value: $('#schedule-outlet-0').val() || null},
+			  				1: {value: $('#schedule-outlet-1').val() || null},
+			  				2: {value: $('#schedule-outlet-2').val() || null},
+			  				3: {value: $('#schedule-outlet-3').val() || null}
 			  			}
 			  		}),
 			  		success: function() {
@@ -212,12 +212,12 @@
 	<div class="container">
 		<h1>Outlets</h1>
 		<div class="row outlet-control">
-			<button class="outlet btn btn-large" data-id="1">1</button>
-			<button class="outlet btn btn-large" data-id="3">3</button>
+			<button class="outlet btn btn-large" data-id="0">0</button>
+			<button class="outlet btn btn-large" data-id="2">2</button>
 		</div>
 		<div class="row outlet-control">
-			<button class="outlet btn btn-large" data-id="2">2</button>
-			<button class="outlet btn btn-large" data-id="4">4</button>
+			<button class="outlet btn btn-large" data-id="1">1</button>
+			<button class="outlet btn btn-large" data-id="3">3</button>
 		</div>
 		<div class="row outlet-control">
 			<button type="button" class="btn btn-primary switch all-on">All on</button>
@@ -269,7 +269,21 @@
 								<label class="col-lg-2 control-label">Outlets</label>
 								<div class="col-lg-10">
 									<div class="row schedule-outlet">
-									  <label for="schedule-outlet-1">1</label>
+									  <label for="schedule-outlet-0">0</label>
+										<select id="schedule-outlet-0" class="form-control">
+											<option value="">No change</option>
+											<option value="0">Turn on</option>
+											<option value="1">Turn off</option>
+										</select>
+										<label for="schedule-outlet-2">2</label>
+										<select id="schedule-outlet-2" class="form-control">
+											<option value="">No change</option>
+											<option value="0">Turn on</option>
+											<option value="1">Turn off</option>
+										</select>
+									</div>
+									<div class="row schedule-outlet">
+										<label for="schedule-outlet-1">1</label>
 										<select id="schedule-outlet-1" class="form-control">
 											<option value="">No change</option>
 											<option value="0">Turn on</option>
@@ -277,20 +291,6 @@
 										</select>
 										<label for="schedule-outlet-3">3</label>
 										<select id="schedule-outlet-3" class="form-control">
-											<option value="">No change</option>
-											<option value="0">Turn on</option>
-											<option value="1">Turn off</option>
-										</select>
-									</div>
-									<div class="row schedule-outlet">
-										<label for="schedule-outlet-2">2</label>
-										<select id="schedule-outlet-2" class="form-control">
-											<option value="">No change</option>
-											<option value="0">Turn on</option>
-											<option value="1">Turn off</option>
-										</select>
-										<label for="schedule-outlet-4">4</label>
-										<select id="schedule-outlet-4" class="form-control">
 											<option value="">No change</option>
 											<option value="0">Turn on</option>
 											<option value="1">Turn off</option>

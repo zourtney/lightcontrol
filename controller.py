@@ -70,12 +70,12 @@ class Scheduler(object):
     for job in self._jobs:
       exe = client_exe
       for k, v in job['outlets'].iteritems():
-        print k, v, '-%s %s' % (k, v['value'])
         if v['value'] is not None:
-          exe += ' -%s %s' % (k, 't' if v['value'] == 0 else 'f')
+          exe += ' -%s %s' % (k, 't' if int(v['value']) == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.set_slices(job['cron'].split(' '))
+      print str(cron)
       #TODO: enabled flag
     crontab.write()
 
