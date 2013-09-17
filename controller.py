@@ -52,7 +52,7 @@ class Scheduler(object):
   def jobs(self):
     return self._jobs
 
-  def job_by_name(self, name):
+  def get_job_by_name(self, name):
     for job in self._jobs:
       if job['name'] == name:
         return job
@@ -70,10 +70,13 @@ class Scheduler(object):
     for job in self._jobs:
       exe = client_exe
       for k, v in job['outlets'].iteritems():
-        exe += ' -%s %s' % (k, 't' if v['value'] == 0 else 'f')
+        print k, v, '-%s %s' % (k, v['value'])
+        if v['value'] is not None:
+          exe += ' -%s %s' % (k, 't' if v['value'] == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.set_slices(job['cron'].split(' '))
+      #TODO: enabled flag
     crontab.write()
 
 

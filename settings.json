@@ -1,28 +1,28 @@
 {
     "pins": {
         "1": {
-            "value": 1, 
+            "value": 0, 
             "initial": null, 
             "id": "1", 
+            "pin": 11
+        }, 
+        "0": {
+            "value": 0, 
+            "initial": null, 
+            "id": "0", 
             "pin": 13
         }, 
         "3": {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
             "id": "3", 
-            "pin": 11
+            "pin": 12
         }, 
         "2": {
             "value": 0, 
             "initial": null, 
             "id": "2", 
             "pin": 15
-        }, 
-        "4": {
-            "value": 0, 
-            "initial": null, 
-            "id": "4", 
-            "pin": 12
         }
     }
 }

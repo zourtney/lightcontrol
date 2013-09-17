@@ -8,3 +8,20 @@ button.outlet {
   width: 100px;
   height: 100px;
 }
+
+.row.schedule-outlet {
+    margin-left: 0;
+    margin-bottom: 5px;
+}
+
+label.schedule-outlet {
+  display: inline;
+  font-weight: normal;
+}
+
+select.form-control {
+  display: inline;
+  width: 120px;
+  margin-left: 5px;
+  margin-right: 20px;
+}
