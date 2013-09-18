@@ -96,7 +96,7 @@
 				return outlets;
 			},
 
-			createModal: function(s) {
+			createModal: function(s, isNew) {
 				var self = this,
 						getOutletVal;
 		  		
@@ -106,6 +106,16 @@
 					}
 					return null;
 				};
+
+				// Change controls based on newness
+				if (isNew) {
+					$('.schedule-details [data-action="save-schedule"]').text('Create Job');
+					$('.schedule-details [data-action="delete-schedule"]').prop('disabled', true);
+				}
+				else {
+					$('.schedule-details [data-action="save-schedule"]').text('Save changes')
+					$('.schedule-details [data-action="delete-schedule"]').prop('disabled', false);
+				}
 				
 				// Update fields
 				$('.modal-title').text('Editing ' + s.name);
@@ -120,8 +130,8 @@
 		  	// Bind to buttons
 		  	$('.schedule-details [data-action="save-schedule"]').on('click', function() {
 		  		$.ajax({
-		  			type: 'PUT',
-		  			url: '/schedules/' + s.name + '/',
+		  			type: isNew ? 'POST' : 'PUT',
+		  			url: '/schedules/' + (isNew ? '' : s.name + '/'),
 		  			contentType: 'application/json',
 		  			data: JSON.stringify({
 			  			name: $('#schedule-name').val(),
@@ -142,7 +152,14 @@
 		  	});
 
 		  	$('.schedule-details [data-action="delete-schedule"]').on('click', function() {
-		  		console.log('delete ' + s.name);
+		  		$.ajax({
+		  			type: 'DELETE',
+		  			url: '/schedules/' + s.name + '/',
+		  			success: function() {
+		  				$('.schedule-details').modal('hide');
+		  				self.refresh();
+		  			}
+		  		});
 		  	});
 
 		  	// Unbind from buttons on modal close
@@ -182,6 +199,20 @@
 						$schedules.append(self.createRow(data[i]));
 					}
 				});
+			},
+
+			createNew: function() {
+				this.createModal({
+					name: 'New job',
+					cron: '0 12 * * *',
+					enabled: true,
+					outlets: {
+						0: {value: null},
+						1: {value: null},
+						2: {value: null},
+						3: {value: null}
+					}
+				}, true);
 			}
 		};
 
@@ -210,6 +241,10 @@
 
 			var schedules = new Schedules();
 			schedules.refresh();
+
+			$('.schedule-add').on('click', function() {
+				schedules.createNew();
+			});
 		});
 	</script>
 
@@ -243,6 +278,10 @@
 			</thead>
 			<tbody />
 		</table>
+		<div class="schedule-add">
+			<i class="glyphicon glyphicon-plus"></i>
+			<label>Add new schedule</label>
+		</div>
 		<div class="schedule-details modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 				<div class="modal-content">

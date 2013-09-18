@@ -16,9 +16,20 @@ scheduler = Scheduler()
 
 """
 
-Single outlet API
+Outlets controller
 
 """
+@app.route('/outlets/', methods=['GET'])
+def get_all():
+  return jsonify(outlets.serialize())
+
+@app.route('/outlets/', methods=['PUT'])
+def set_all():
+  for k, v in json.loads(request.data).iteritems():
+    outlets[k].value = v['value']
+  outlets.save()
+  return jsonify(outlets.serialize())
+
 @app.route('/outlets/<num>/', methods=['GET'])
 def get_out(num):
   return jsonify(outlets[num].serialize())
@@ -35,25 +46,7 @@ def set_out(num):
 
 """
 
-Batch API
-
-"""
-@app.route('/outlets/', methods=['GET'])
-def get_all():
-  return jsonify(outlets.serialize())
-
-@app.route('/outlets/', methods=['PUT'])
-def set_all():
-  for k, v in json.loads(request.data).iteritems():
-    outlets[k].value = v['value']
-  outlets.save()
-  return jsonify(outlets.serialize())
-
-
-
-"""
-
-Cron
+Schedules controller
 
 """
 @app.route('/schedules/', methods=['GET'])
@@ -63,6 +56,15 @@ def get_schedule():
   resp.mimetype = 'application/json'
   return resp
 
+@app.route('/schedules/', methods=['POST'])
+def create_one_schedule():
+  scheduler.refresh()
+  job_data = json.loads(request.data)
+  scheduler.jobs.append(job_data)
+  scheduler.save()
+  scheduler.refresh()
+  return jsonify(scheduler.get_job_by_name(job_data['name']))
+
 @app.route('/schedules/<name>/', methods=['GET'])
 def get_one_schedule(name):
   scheduler.refresh()
@@ -70,12 +72,20 @@ def get_one_schedule(name):
 
 @app.route('/schedules/<name>/', methods=['PUT'])
 def set_one_schedule(name):
+  scheduler.refresh()
   job = scheduler.get_job_by_name(name)   #TODO: handle not found state
   for k, v in json.loads(request.data).iteritems():
     job[k] = v
   scheduler.save()
   scheduler.refresh()
   return jsonify(scheduler.get_job_by_name(job['name']))
+
+@app.route('/schedules/<name>/', methods=['DELETE'])
+def delete_one_schedule(name):
+  job = scheduler.get_job_by_name(name)
+  scheduler.jobs.remove(job)
+  scheduler.save()
+  return jsonify(job)
 
 
 

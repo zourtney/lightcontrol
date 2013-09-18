@@ -36,7 +36,7 @@ class Scheduler(object):
   def _get_jobs(self):
     self._jobs = []
     for cron in self._crontab:
-      meta = cron.meta().lower()
+      meta = cron.meta()
       i = meta.find(CRON_APP_ID)
       if i >= 0:
         self._jobs.append({

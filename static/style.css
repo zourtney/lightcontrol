@@ -25,3 +25,23 @@ select.form-control {
   margin-left: 5px;
   margin-right: 20px;
 }
+
+
+.schedule-add {
+  font-size: 1.2em;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.schedule-add:hover {
+  opacity: 1;
+}
+
+.schedule-add label {
+  font-weight: normal;
+}
+
+.schedule-add i {
+  font-size: 1.5em;
+}
+
