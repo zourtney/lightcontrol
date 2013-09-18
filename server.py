@@ -2,7 +2,7 @@
 
 import json
 from flask import Flask, jsonify, render_template, request, make_response
-from controller import Outlets, Scheduler
+from lightcontrol import Outlets, Scheduler
 
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
