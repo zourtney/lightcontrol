@@ -9,6 +9,7 @@ SETTINGS_FILE = 'settings.json'
 CRON_APP_ID = 'lightcontrol'
 
 class Scheduler(object):
+  """Manager object for outlet cron jobs"""
   def __init__(self):
     self.refresh()
 
@@ -16,7 +17,6 @@ class Scheduler(object):
     self._crontab = CronTab('root')
     self._get_jobs()
 
-  """Manager object for outlet cron jobs"""
   def _get_outlets_for_cron(self, job):
     argv = shlex.split(str(job.command))
     opts, args = getopt.getopt(argv[1:], 'hd:0:1:2:3:', ['help', 'destination=', 'top-left=', 'bottom-left=', 'top-right=', 'bottom-right='])
