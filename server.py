@@ -73,9 +73,9 @@ def set_one_schedule(name):
   job = scheduler.get_job_by_name(name)   #TODO: handle not found state
   for k, v in json.loads(request.data).iteritems():
     job[k] = v
-  scheduler.save();
-  #scheduler.refresh();
-  #return jsonify(scheduler.get_job_by_name(job['name']))
+  scheduler.save()
+  scheduler.refresh()
+  return jsonify(scheduler.get_job_by_name(job['name']))
 
 
 

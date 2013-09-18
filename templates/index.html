@@ -64,10 +64,10 @@
 					url: '/outlets/',
 					contentType: 'application/json',
 					data: JSON.stringify({
+						0: {value: val},
 						1: {value: val},
 						2: {value: val},
-						3: {value: val},
-						4: {value: val}
+						3: {value: val}
 					}),
 					success: function(data) {
 						for (var i in data) {
@@ -97,25 +97,28 @@
 			},
 
 			createModal: function(s) {
-				var outletValue = function(num) {
+				var self = this,
+						getOutletVal;
+		  		
+		  	getOutletVal = function(num) {
 					if (s.outlets[num]) {
 						return s.outlets[num].value;
 					}
 					return null;
 				};
+				
 				// Update fields
 				$('.modal-title').text('Editing ' + s.name);
 		  	$('#schedule-name').val(s.name);
 		  	$('#schedule-cron').val(s.cron);
 		  	$('#schedule-enabled').prop('checked', s.enabled);
-		  	$('#schedule-outlet-0').val(outletValue(0));
-		  	$('#schedule-outlet-1').val(outletValue(1));
-		  	$('#schedule-outlet-2').val(outletValue(2));
-		  	$('#schedule-outlet-3').val(outletValue(3));
+		  	$('#schedule-outlet-0').val(getOutletVal(0));
+		  	$('#schedule-outlet-1').val(getOutletVal(1));
+		  	$('#schedule-outlet-2').val(getOutletVal(2));
+		  	$('#schedule-outlet-3').val(getOutletVal(3));
 
 		  	// Bind to buttons
 		  	$('.schedule-details [data-action="save-schedule"]').on('click', function() {
-		  		var self = this;
 		  		$.ajax({
 		  			type: 'PUT',
 		  			url: '/schedules/' + s.name + '/',
@@ -173,7 +176,8 @@
 			refresh: function() {
 				var self = this;
 				$.get('/schedules/', function(data) {
-					var $schedules = $('table.schedules');
+					var $schedules = $('table.schedules tbody');
+					$schedules.empty();
 					for (i = 0; i < data.length; i++) {
 						$schedules.append(self.createRow(data[i]));
 					}
@@ -237,6 +241,7 @@
 					<th>Next</th>
 				</tr>
 			</thead>
+			<tbody />
 		</table>
 		<div class="schedule-details modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
