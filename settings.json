@@ -13,7 +13,7 @@
             "pin": 13
         }, 
         "3": {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
             "id": "3", 
             "pin": 12

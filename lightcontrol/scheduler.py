@@ -1,6 +1,5 @@
 import os
 from crontab import CronTab
-
 from cli import Cli
 from constants import CRON_APP_ID
 
@@ -12,6 +11,7 @@ class Scheduler(object):
 
   def refresh(self):
     self._crontab = CronTab('root')
+    self._cli = Cli()
     self._get_jobs()
 
   def _get_jobs(self):
@@ -22,7 +22,7 @@ class Scheduler(object):
       if i >= 0:
         self._jobs.append({
           'name': meta[i + len(CRON_APP_ID):].strip(),  # get string after CRON_APP_ID
-          'outlets': Cli.build_data_from_string(str(cron.command)),
+          'outlets': self._cli.get_outlets(command=str(cron.command)),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
           'cron': str(cron.render_time())
@@ -59,5 +59,3 @@ class Scheduler(object):
       print str(cron)
       #TODO: enabled flag
     crontab.write()
-
-
