@@ -1,6 +1,5 @@
 import json
 from gpiocrust import Header, OutputPin
-from constants import SETTINGS_FILE
 
 
 class Outlet(OutputPin):
@@ -22,7 +21,7 @@ class Outlet(OutputPin):
 
 class Outlets(object):
   """Manager object for a collection of outlets"""
-  def __init__(self, settings_file=SETTINGS_FILE):
+  def __init__(self, settings_file=None):
     self._header = Header()
     self._settings_filename = settings_file
     self._load()

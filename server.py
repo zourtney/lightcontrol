@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
+import os
 import json
 from flask import Flask, jsonify, render_template, request, make_response
 from lightcontrol import Outlets, Scheduler
+
+SETTINGS_FILE = os.path.dirname(__file__) + '/settings.json'
 
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.debug = True
 
 # Pin control
-outlets = Outlets()
+outlets = Outlets(settings_file=SETTINGS_FILE)
 scheduler = Scheduler()
 
 

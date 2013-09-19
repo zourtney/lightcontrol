@@ -2,7 +2,6 @@ import getopt
 import shlex
 import argparse
 import copy
-from constants import SETTINGS_FILE
 
 
 class Cli(argparse.ArgumentParser):
