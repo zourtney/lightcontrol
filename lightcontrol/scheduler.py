@@ -6,7 +6,8 @@ from constants import CRON_APP_ID
 
 class Scheduler(object):
   """Manager object for outlet cron jobs"""
-  def __init__(self):
+  def __init__(self, root_path=None):
+    self._root_path = root_path
     self.refresh()
 
   def refresh(self):
@@ -47,7 +48,7 @@ class Scheduler(object):
       crontab.remove(old_crons.pop())
 
     # Add new ones
-    client_exe = '%s/client.py' % os.path.dirname(os.path.realpath(__file__)) 
+    client_exe = '%s/client.py' % self._root_path
     for job in self._jobs:
       exe = client_exe
       for k, v in job['outlets'].iteritems():
