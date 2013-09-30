@@ -35,7 +35,7 @@
 				// Initialize all lights
 				var self = this;
 				$.get('/outlets/', function(data) {
-					for (var i in data) {
+					for (var i = 0; i < data.length; i++) {
 						self.showStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 					}
 				});
@@ -63,14 +63,14 @@
 					type: 'PUT',
 					url: '/outlets/',
 					contentType: 'application/json',
-					data: JSON.stringify({
-						0: {value: val},
-						1: {value: val},
-						2: {value: val},
-						3: {value: val}
-					}),
+					data: JSON.stringify([
+						{id: '0', value: val},
+						{id: '1', value: val},
+						{id: '2', value: val},
+						{id: '3', value: val}
+					]),
 					success: function(data) {
-						for (var i in data) {
+						for (var i = 0; i < data.length; i++) {
 							self.showStatus($('.outlet[data-id="' + data[i].id + '"]'), data[i].value);
 						}
 					}

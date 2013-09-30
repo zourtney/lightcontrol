@@ -17,6 +17,17 @@ outlets = Outlets(settings_file=SETTINGS_FILE)
 scheduler = Scheduler(root_path=ROOT_PATH)
 
 
+"""
+
+Helpers
+
+"""
+def jsonify_array(serialized_array):
+  resp = make_response(json.dumps(serialized_array, indent=4))
+  resp.mimetype = 'application/json'
+  return resp
+
+
 
 """
 
@@ -25,14 +36,14 @@ Outlets controller
 """
 @app.route('/outlets/', methods=['GET'])
 def get_all():
-  return jsonify(outlets.serialize())
+  return jsonify_array(outlets.serialize())
 
 @app.route('/outlets/', methods=['PUT'])
 def set_all():
-  for k, v in json.loads(request.data).iteritems():
-    outlets[k].value = v['value']
+  for v in json.loads(request.data):
+    outlets[v['id']].value = v['value']
   outlets.save()
-  return jsonify(outlets.serialize())
+  return jsonify_array(outlets.serialize())
 
 @app.route('/outlets/<num>/', methods=['GET'])
 def get_out(num):
@@ -56,9 +67,7 @@ Schedules controller
 @app.route('/schedules/', methods=['GET'])
 def get_schedule():
   scheduler.refresh()
-  resp = make_response(json.dumps(scheduler.jobs, indent=4))
-  resp.mimetype = 'application/json'
-  return resp
+  return jsonify_array(scheduler.jobs)
 
 @app.route('/schedules/', methods=['POST'])
 def create_one_schedule():
@@ -67,26 +76,26 @@ def create_one_schedule():
   scheduler.jobs.append(job_data)
   scheduler.save()
   scheduler.refresh()
-  return jsonify(scheduler.get_job_by_name(job_data['name']))
+  return jsonify(scheduler[job_data['name']])
 
 @app.route('/schedules/<name>/', methods=['GET'])
 def get_one_schedule(name):
   scheduler.refresh()
-  return jsonify(scheduler.get_job_by_name(name))  #TODO: or 404
+  return jsonify(scheduler[name])  #TODO: or 404
 
 @app.route('/schedules/<name>/', methods=['PUT'])
 def set_one_schedule(name):
   scheduler.refresh()
-  job = scheduler.get_job_by_name(name)   #TODO: handle not found state
+  job = scheduler[name]   #TODO: handle not found state
   for k, v in json.loads(request.data).iteritems():
     job[k] = v
   scheduler.save()
   scheduler.refresh()
-  return jsonify(scheduler.get_job_by_name(job['name']))
+  return jsonify(scheduler[job['name']])
 
 @app.route('/schedules/<name>/', methods=['DELETE'])
 def delete_one_schedule(name):
-  job = scheduler.get_job_by_name(name)
+  job = scheduler[name]
   scheduler.jobs.remove(job)
   scheduler.save()
   return jsonify(job)

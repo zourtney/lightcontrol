@@ -30,10 +30,10 @@ class Outlets(object):
   def _load(self):
     with open(self._settings_filename, 'r') as infile:
       opts = json.load(infile)
-      self._pins = {}
-      for i, p in opts['pins'].iteritems():
+      self._pins = []
+      for p in opts['pins']:
         initial = p['initial'] if 'initial' in p and p['initial'] is not None else p['value']
-        self._pins[i] = Outlet(i, p['pin'], value=initial, initial=p['initial'])
+        self._pins.append(Outlet(p['id'], p['pin'], value=initial, initial=p['initial']))
 
   def save(self):
     with open(self._settings_filename, 'w') as outfile:
@@ -43,10 +43,7 @@ class Outlets(object):
       json.dump(obj, outfile, indent=4)
 
   def serialize(self):
-    ret = {}
-    for i in self._pins.keys():
-      ret[i] = self._pins[i].serialize()
-    return ret
+    return [p.serialize() for p in self._pins]
 
   def __getitem__(self, key):
-    return self._pins[key]
+    return next((p for p in self._pins if p._id == key), None)

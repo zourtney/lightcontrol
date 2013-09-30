@@ -34,11 +34,8 @@ class Scheduler(object):
   def jobs(self):
     return self._jobs
 
-  def get_job_by_name(self, name):
-    for job in self._jobs:
-      if job['name'] == name:
-        return job
-    return None
+  def __getitem__(self, key):
+    return next((job for job in self._jobs if job['name'] == key), None)
 
   def save(self):
     # Remove old lightcontrol cron jobs
