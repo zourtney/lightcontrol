@@ -13,29 +13,39 @@ class Scheduler(object):
   def refresh(self):
     self._crontab = CronTab('root')
     self._cli = Cli()
-    self._get_jobs()
+    self._load()
 
-  def _get_jobs(self):
-    self._jobs = []
+  def _load(self):
+    self._jobs = {}
     for cron in self._crontab:
       meta = cron.meta()
       i = meta.find(CRON_APP_ID)
       if i >= 0:
-        self._jobs.append({
-          'name': meta[i + len(CRON_APP_ID):].strip(),  # get string after CRON_APP_ID
+        name = meta[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
+        self._jobs[name] = {
+          'name': name,
           'outlets': self._cli.get_outlets(command=str(cron.command)),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
           'cron': str(cron.render_time())
-        })
+        }
     return self._jobs
   
-  @property
-  def jobs(self):
-    return self._jobs
+  #@property
+  #def jobs(self):
+  #  return self._jobs
 
   def __getitem__(self, key):
-    return next((job for job in self._jobs if job['name'] == key), None)
+    return self._jobs[key]
+
+  def __setitem__(self, key, item):
+    self._jobs[key] = item
+
+  def __delitem__(self, key):
+    del self._jobs[key]
+
+  def serialize(self):
+    return [v for k, v in self._jobs.iteritems()]
 
   def save(self):
     # Remove old lightcontrol cron jobs
@@ -46,7 +56,7 @@ class Scheduler(object):
 
     # Add new ones
     client_exe = '%s/client.py' % self._root_path
-    for job in self._jobs:
+    for job in self._jobs.itervalues():
       exe = client_exe
       for k, v in job['outlets'].iteritems():
         if v['value'] is not None:
@@ -54,6 +64,6 @@ class Scheduler(object):
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.set_slices(job['cron'].split(' '))
-      print str(cron)
+      #print str(cron)
       #TODO: enabled flag
     crontab.write()

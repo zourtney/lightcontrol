@@ -67,16 +67,16 @@ Schedules controller
 @app.route('/schedules/', methods=['GET'])
 def get_schedule():
   scheduler.refresh()
-  return jsonify_array(scheduler.jobs)
+  return jsonify_array(scheduler.serialize())
 
 @app.route('/schedules/', methods=['POST'])
 def create_one_schedule():
   scheduler.refresh()
-  job_data = json.loads(request.data)
-  scheduler.jobs.append(job_data)
+  data = json.loads(request.data)
+  scheduler[data['name']] = data #.jobs.append(data)
   scheduler.save()
   scheduler.refresh()
-  return jsonify(scheduler[job_data['name']])
+  return jsonify(scheduler[data['name']])
 
 @app.route('/schedules/<name>/', methods=['GET'])
 def get_one_schedule(name):
@@ -96,7 +96,7 @@ def set_one_schedule(name):
 @app.route('/schedules/<name>/', methods=['DELETE'])
 def delete_one_schedule(name):
   job = scheduler[name]
-  scheduler.jobs.remove(job)
+  del scheduler[name]
   scheduler.save()
   return jsonify(job)
 
