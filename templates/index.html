@@ -195,6 +195,10 @@
 			refresh: function() {
 				var self = this;
 				$.get('/schedules/', function(data) {
+					// Sort by 'next' time, ascending
+					data.sort(function(a, b) { return (a.next < b.next) ? -1 : (a.next > b.next) ? +1 : 0 });
+					
+					// Insert into DOM
 					var $schedules = $('table.schedules tbody');
 					$schedules.empty();
 					for (i = 0; i < data.length; i++) {
