@@ -90,8 +90,8 @@
 		Schedules.prototype = {
 			getOutletString: function(s) {
 				var outlets = '';
-				for (var j in s.outlets) {
-					outlets += j + '=' + (s.outlets[j].value === ON ? 'on' : 'off') + ';';
+				for (var i = 0; i < s.outlets.length; i++) {
+					outlets += s.outlets[i].id + '=' + (s.outlets[i].value === ON ? 'on' : 'off') + ';';
 				}
 				return outlets;
 			},
@@ -101,9 +101,11 @@
 						getOutletVal;
 		  		
 		  	getOutletVal = function(num) {
-					if (s.outlets[num]) {
-						return s.outlets[num].value;
-					}
+		  		for (var i = 0; i < s.outlets.length; i++) {
+		  			if (parseInt(s.outlets[i].id) === num) {
+		  				return s.outlets[i].value;
+		  			}
+		  		}
 					return null;
 				};
 
@@ -137,12 +139,12 @@
 			  			name: $('#schedule-name').val(),
 			  			cron: $('#schedule-cron').val(),
 			  			enabled: $('#schedule-enabled').prop('checked'),
-			  			outlets: {
-			  				0: {value: $('#schedule-outlet-0').val() || null},
-			  				1: {value: $('#schedule-outlet-1').val() || null},
-			  				2: {value: $('#schedule-outlet-2').val() || null},
-			  				3: {value: $('#schedule-outlet-3').val() || null}
-			  			}
+			  			outlets: [
+			  				{id: '0', value: $('#schedule-outlet-0').val() || null},
+			  				{id: '1', value: $('#schedule-outlet-1').val() || null},
+			  				{id: '2', value: $('#schedule-outlet-2').val() || null},
+			  				{id: '3', value: $('#schedule-outlet-3').val() || null}
+			  			]
 			  		}),
 			  		success: function() {
 			  			$('.schedule-details').modal('hide');
@@ -206,12 +208,12 @@
 					name: 'New job',
 					cron: '0 12 * * *',
 					enabled: true,
-					outlets: {
-						0: {value: null},
-						1: {value: null},
-						2: {value: null},
-						3: {value: null}
-					}
+					outlets: [
+						{id: '0', value: null},
+						{id: '1', value: null},
+						{id: '2', value: null},
+						{id: '3', value: null}
+					]
 				}, true);
 			}
 		};

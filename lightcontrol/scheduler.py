@@ -58,9 +58,9 @@ class Scheduler(object):
     client_exe = '%s/client.py' % self._root_path
     for job in self._jobs.itervalues():
       exe = client_exe
-      for k, v in job['outlets'].iteritems():
-        if v['value'] is not None:
-          exe += ' -%s %s' % (k, 't' if int(v['value']) == 0 else 'f')
+      for outlet in job['outlets']:
+        if outlet['value'] is not None:
+          exe += ' -%s %s' % (outlet['id'], 't' if int(outlet['value']) == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.set_slices(job['cron'].split(' '))
