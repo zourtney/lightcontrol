@@ -19,7 +19,7 @@ class Cli(argparse.ArgumentParser):
   def parse_command(self, command):
     return self.parse_args(shlex.split(command)[1:])  # parse everything except the first item, the executable
 
-  def get_outlets(self, args=None, command=None, switch_data={}):
+  def get_outlets(self, args=None, command=None, switch_data=[]):
     if args is None:
       args = self.parse_command(command)
 
@@ -27,5 +27,5 @@ class Cli(argparse.ArgumentParser):
     for k, v in vars(args).iteritems():
       if v is not None and k in ['0', '1', '2', '3']:
         val = 0 if v.lower() == 't' else 1
-        data.setdefault(k, {})['value'] = val  # autovivification, baby. http://stackoverflow.com/a/10843487/311207
+        data.append({'id': k, 'value': val})
     return data
