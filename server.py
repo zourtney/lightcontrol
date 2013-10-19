@@ -1,76 +1,104 @@
 #!/usr/bin/env python
 
+import os
 import json
 from flask import Flask, jsonify, render_template, request, make_response
-from gpiocrust import Header, OutputPin
+from lightcontrol import Outlets, Scheduler
 
-# Set up Raspberry Pi I/O
-header = Header()
-out = {
-    1: OutputPin(15),
-    2: OutputPin(13),
-    3: OutputPin(12),
-    4: OutputPin(11)
-}
-
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
 # Super simple web service
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.debug = True
 
+# Pin control
+outlets = Outlets(settings_file=SETTINGS_FILE)
+scheduler = Scheduler(root_path=ROOT_PATH)
 
 
 """
 
-Single outlet API
+Helpers
 
 """
-def serialize_one(num):
-  outlet = out[int(num)]
-  return {
-    'id': int(num),
-    'value': outlet.value
-  }
-
-@app.route('/outlets/<num>/', methods=['GET'])
-def get_out(num):
-  return jsonify(serialize_one(num))
-
-@app.route('/outlets/<num>/', methods=['PUT'])
-def set_out(num):
-  pin = out[int(num)]
-  requestJson = json.loads(request.data)
-  pin.value = int(requestJson['value'])
-  return jsonify(serialize_one(num))
-
-
-
-"""
-
-Batch API
-
-"""
-def serialize_all():
-  return [
-    serialize_one(1),
-    serialize_one(2),
-    serialize_one(3),
-    serialize_one(4)
-  ]
-
-@app.route('/outlets/', methods=['GET'])
-def get_all():
-  resp = make_response(json.dumps(serialize_all()))
+def jsonify_array(serialized_array):
+  resp = make_response(json.dumps(serialized_array, indent=4))
   resp.mimetype = 'application/json'
   return resp
+
+
+
+"""
+
+Outlets controller
+
+"""
+@app.route('/outlets/', methods=['GET'])
+def get_all():
+  return jsonify_array(outlets.serialize())
 
 @app.route('/outlets/', methods=['PUT'])
 def set_all():
-  for outlet in json.loads(request.data):
-    out[int(outlet['id'])].value = outlet['value']
-  resp = make_response(json.dumps(serialize_all()))
-  resp.mimetype = 'application/json'
-  return resp
+  for v in json.loads(request.data):
+    outlets[v['id']].value = v['value']
+  outlets.save()
+  return jsonify_array(outlets.serialize())
+
+@app.route('/outlets/<num>/', methods=['GET'])
+def get_out(num):
+  return jsonify(outlets[num].serialize())
+
+@app.route('/outlets/<num>/', methods=['PUT'])
+def set_out(num):
+  pin = outlets[num]
+  requestJson = json.loads(request.data)
+  pin.value = int(requestJson['value'])
+  outlets.save()
+  return jsonify(outlets[num].serialize())
+
+
+
+"""
+
+Schedules controller
+
+"""
+@app.route('/schedules/', methods=['GET'])
+def get_schedule():
+  scheduler.refresh()
+  return jsonify_array(scheduler.serialize())
+
+@app.route('/schedules/', methods=['POST'])
+def create_one_schedule():
+  scheduler.refresh()
+  data = json.loads(request.data)
+  scheduler[data['name']] = data #.jobs.append(data)
+  scheduler.save()
+  scheduler.refresh()
+  return jsonify(scheduler[data['name']])
+
+@app.route('/schedules/<name>/', methods=['GET'])
+def get_one_schedule(name):
+  scheduler.refresh()
+  return jsonify(scheduler[name])  #TODO: or 404
+
+@app.route('/schedules/<name>/', methods=['PUT'])
+def set_one_schedule(name):
+  scheduler.refresh()
+  job = scheduler[name]   #TODO: handle not found state
+  for k, v in json.loads(request.data).iteritems():
+    job[k] = v
+  scheduler.save()
+  scheduler.refresh()
+  return jsonify(scheduler[job['name']])
+
+@app.route('/schedules/<name>/', methods=['DELETE'])
+def delete_one_schedule(name):
+  job = scheduler[name]
+  del scheduler[name]
+  scheduler.save()
+  return jsonify(job)
 
 
 

@@ -1,68 +1,47 @@
-* {
-    margin: 0;
-    padding: 0;
+.row.outlet-control {
+  width: 210px;
+  margin: 0 0 5px 0;
+  text-align: center;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
+button.outlet {
+  width: 100px;
+  height: 100px;
 }
 
-body {
-    background: black;
+.row.schedule-outlet {
+    margin-left: 0;
+    margin-bottom: 5px;
 }
 
-.group {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    margin-top: 25px;
-    margin-bottom: 25px;
+label.schedule-outlet {
+  display: inline;
+  font-weight: normal;
 }
 
-.group.individual {
-    
+select.form-control {
+  display: inline;
+  width: 120px;
+  margin-left: 5px;
+  margin-right: 20px;
 }
 
-.group.all {
-    bottom: 0;
+
+.schedule-add {
+  font-size: 1.2em;
+  text-align: center;
+  opacity: 0.8;
 }
 
-.switch {
-    display: inline-block;
-    background: #666;
-    border-radius: 10px;
-    margin: 10px;
-    padding: 25px;
-    color: white;
-    font-size: 16px;
+.schedule-add:hover {
+  opacity: 1;
 }
 
-.switch.all-on {
-    background-color: #0c0;
-    background-image: -webkit-gradient(radial, 25 25, 0, center center, 49, from(#090), to(#0c0));
-    border: 2px solid green;
+.schedule-add label {
+  font-weight: normal;
 }
 
-.switch.all-off {
-    background-color: #c00;
-    background-image: -webkit-gradient(radial, 25 25, 0, center center, 49, from(#900), to(#c00));
-    border: 2px solid red;
+.schedule-add i {
+  font-size: 1.5em;
 }
 
-.outlet {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    margin: 10px;
-    background-color: rgb(100, 100, 100);
-    background-image: -webkit-gradient(radial, 20 20, 0, center center, 49, from(#aaa), to(#333));
-    border: 2px solid rgb(50, 50, 50);
-}
-
-.outlet.on {
-    background-color: rgb(255, 255, 0);
-    background-image: -webkit-gradient(radial, 20 20, 0, center center, 49, from(#ff0), to(#aa0));
-    border: 2px solid rgb(150, 150, 0);
-}
