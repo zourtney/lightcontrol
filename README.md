@@ -7,6 +7,9 @@ RPi-powered lighting control playground
 Dependencies
 ------------
 
-    sudo pip install requests
-    sudo pip install python-crontab
-    sudo pip install croniter
+    pip install requests
+    pip install python-crontab
+    pip install croniter
+    pip install flask
+
+**Note:** you may need to run `pip install` under `sudo`.

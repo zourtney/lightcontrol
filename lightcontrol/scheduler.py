@@ -18,10 +18,10 @@ class Scheduler(object):
   def _load(self):
     self._jobs = {}
     for cron in self._crontab:
-      meta = cron.meta()
-      i = meta.find(CRON_APP_ID)
+      comment = cron.comment
+      i = comment.find(CRON_APP_ID)
       if i >= 0:
-        name = meta[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
+        name = comment[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
         self._jobs[name] = {
           'name': name,
           'outlets': self._cli.get_outlets(command=str(cron.command)),
@@ -31,10 +31,6 @@ class Scheduler(object):
         }
     return self._jobs
   
-  #@property
-  #def jobs(self):
-  #  return self._jobs
-
   def __getitem__(self, key):
     return self._jobs[key]
 
@@ -50,7 +46,7 @@ class Scheduler(object):
   def save(self):
     # Remove old lightcontrol cron jobs
     crontab = self._crontab
-    old_crons = [cron for cron in crontab if CRON_APP_ID in cron.meta()]
+    old_crons = [cron for cron in crontab if CRON_APP_ID in cron.comment]
     while len(old_crons):
       crontab.remove(old_crons.pop())
 
@@ -63,7 +59,6 @@ class Scheduler(object):
           exe += ' -%s %s' % (outlet['id'], 't' if int(outlet['value']) == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
-      cron.set_slices(job['cron'].split(' '))
-      #print str(cron)
+      cron.setall(job['cron'])
       #TODO: enabled flag
     crontab.write()
