@@ -1,7 +1,7 @@
 Light Control Server
 ====================
 
-This applicatino provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
+This application provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
 
  - Direct on/off GPIO pin manipulation
  - Schedule (cron) management
@@ -11,13 +11,13 @@ Initial Setup
 
 **Source**
 
-First, get the server code from Bitbucket. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and making it easier is [the list](https://bitbucket.org/zourtney/lightcontrol/issues?status=new&status=open)).
+First, get the source code from Bitbucket. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and [making it easier](https://bitbucket.org/zourtney/lightcontrol/issue/1/medium-make-easily-installable) is the list).
 
     git clone https://bitbucket.org/zourtney/lightcontrol.git
     cd lightcontrol
     git submodule update --init --recursive
 
-Alternatively, you can download the master branch zip file from Bitbucket. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
+Alternatively, you can get a zip file from the Downloads section on Bitbucket. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
 
 **3rd Party Dependencies**
 
@@ -28,7 +28,7 @@ Install the following dependencies using the [pip](https://pypi.python.org/pypi/
     pip install croniter
     pip install python-crontab==1.6
 
-**NOTE:** on Unix-based machines, you may need to run `pip install` under `sudo`.
+**NOTE:** you may need to run `pip install` under `sudo`.
 
 Edit settings.json
 ------------------
@@ -50,7 +50,7 @@ Where:
 - `id`: unique identifier
 - `pin`: the GPIO pin to control
 - `value`: the current pins state. `0` for on, `1` for off.
-- `initial`: state to set the pin on servers startup. `0` for on, `1` for off, `null` for no change.
+- `initial`: state to set the pin on server startup. `0` for on, `1` for off, `null` for no change.
 
 REST API
 --------
