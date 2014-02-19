@@ -4,7 +4,7 @@ Light Control Server
 This application provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
 
  - Direct on/off GPIO pin manipulation
- - Schedule (cron) management
+ - Scheduled GPIO pin manipulation (via cron)
 
 Initial Setup
 -------------
