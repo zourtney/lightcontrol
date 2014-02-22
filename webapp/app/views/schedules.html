@@ -12,7 +12,7 @@
 </div>
 
 <ul class="schedules list-unstyled">
-  <li class="schedule" ng-repeat="schedule in schedules">
+  <li class="schedule" ng-repeat="schedule in schedules" ng-click="open()">
     <h4>{{schedule.name}}</h4>
     <span class="next">Next occurs: {{schedule.next}}</span>
     <div class="cron">{{schedule.cron}}</div>

@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h3>{{schedule.name}}</h3>
+</div>
+<div class="modal-body schedule">
+  <form role="form">
+    <div class="form-group">
+      <label for="scheduleName">Name</label>
+      <input type="text" class="form-control" id="scheduleName" placeholder="Enter schedule name" value="{{schedule.name}}">
+    </div>
+    <div class="form-group">
+      <label for="scheduleCron">Time schedule (use <a href="http://en.wikipedia.org/wiki/Cron#Examples" target="_blank">cron format</a>)</label>
+      <input type="text" class="form-control" id="scheduleCron" placeholder="Enter time schedule" value="{{schedule.cron}}">
+    </div>
+  </form>
+  <form class="form-horizontal" role="form">
+    <div class="form-group" ng-repeat="outlet in mergedOutlets">
+      <label for="scheduleOutlet{{outlet.id}}" class="col-sm-3 control-label">{{outlet.id}}</label>
+      <select id="scheduleOutlet{{outlet.id}}" class="form-control" value="{{outlet.value}}">
+        <option value="">no change</option>
+        <option value="0">on</option>
+        <option value="1">off</option>
+      </select>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" ng-click="ok()">Save</button>
+</div>

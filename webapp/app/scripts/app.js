@@ -5,6 +5,7 @@ angular.module('webappApp', [
   'ngCookies',
   'ngSanitize',
   'ngRoute',
+  'ui.bootstrap',
   'outletServices',
   'schedulesServices',
   'aboutServices'
