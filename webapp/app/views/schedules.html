@@ -11,8 +11,17 @@
   </div>
 </div>
 
-<ul class="schedules">
-  <li ng-repeat="schedule in schedules">
-    {{schedule.name}}
+<ul class="schedules list-unstyled">
+  <li class="schedule" ng-repeat="schedule in schedules">
+    <h4>{{schedule.name}}</h4>
+    <span class="next">Next occurs: {{schedule.next}}</span>
+    <div class="cron">{{schedule.cron}}</div>
+    <ul class="schedule-outlets list-unstyled">
+      <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
+        <button class="btn" ng-class="outlet.value === 0 ? 'btn-primary' : ''">{{outlet.id}}</button>
+      </li>
+    </ul>
+    <i class="delete control fa fa-trash-o"></i>
+    <i class="edit control fa fa-edit"></i>
   </li>
 </ul>
