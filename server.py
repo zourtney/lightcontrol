@@ -9,7 +9,7 @@ ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
 # Super simple web service
-app = Flask(__name__, static_folder='static', static_url_path='')
+app = Flask(__name__, template_folder='webapp/app', static_folder='webapp/app', static_url_path='')
 app.debug = True
 
 # Pin control
@@ -35,10 +35,12 @@ Outlets controller
 
 """
 @app.route('/outlets/', methods=['GET'])
+@app.route('/api/outlets/', methods=['GET'])
 def get_all():
   return jsonify_array(outlets.serialize())
 
 @app.route('/outlets/', methods=['PUT'])
+@app.route('/api/outlets/', methods=['PUT'])
 def set_all():
   for v in json.loads(request.data):
     outlets[v['id']].value = v['value']
@@ -46,10 +48,12 @@ def set_all():
   return jsonify_array(outlets.serialize())
 
 @app.route('/outlets/<num>/', methods=['GET'])
+@app.route('/api/outlets/<num>', methods=['GET'])
 def get_out(num):
   return jsonify(outlets[num].serialize())
 
 @app.route('/outlets/<num>/', methods=['PUT'])
+@app.route('/api/outlets/<num>', methods=['PUT'])
 def set_out(num):
   pin = outlets[num]
   requestJson = json.loads(request.data)
