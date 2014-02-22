@@ -1,7 +1,7 @@
 {
     "pins": [
         {
-            "value": 1, 
+            "value": 0, 
             "initial": null, 
             "id": "1", 
             "pin": 13
@@ -13,7 +13,7 @@
             "pin": 15
         }, 
         {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
             "id": "3", 
             "pin": 11

@@ -69,11 +69,13 @@ Schedules controller
 
 """
 @app.route('/schedules/', methods=['GET'])
+@app.route('/api/schedules/', methods=['GET'])
 def get_schedule():
   scheduler.refresh()
   return jsonify_array(scheduler.serialize())
 
 @app.route('/schedules/', methods=['POST'])
+@app.route('/api/schedules/', methods=['POST'])
 def create_one_schedule():
   scheduler.refresh()
   data = json.loads(request.data)
@@ -83,11 +85,13 @@ def create_one_schedule():
   return jsonify(scheduler[data['name']])
 
 @app.route('/schedules/<name>/', methods=['GET'])
+@app.route('/api/schedules/<name>', methods=['GET'])
 def get_one_schedule(name):
   scheduler.refresh()
   return jsonify(scheduler[name])  #TODO: or 404
 
 @app.route('/schedules/<name>/', methods=['PUT'])
+@app.route('/api/schedules/<name>', methods=['PUT'])
 def set_one_schedule(name):
   scheduler.refresh()
   job = scheduler[name]   #TODO: handle not found state
@@ -98,6 +102,7 @@ def set_one_schedule(name):
   return jsonify(scheduler[job['name']])
 
 @app.route('/schedules/<name>/', methods=['DELETE'])
+@app.route('/api/schedules/<name>', methods=['DELETE'])
 def delete_one_schedule(name):
   job = scheduler[name]
   del scheduler[name]
