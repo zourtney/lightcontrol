@@ -1,0 +1,16 @@
+<div class="outlets">  
+  <button type="button" ng-repeat="outlet in outlets"
+    class="outlet btn btn-lg" ng-class="outlet.value === 0 ? 'btn-primary' : ''"
+    ng-click="toggleOutlet()"
+  >
+    <i class="fa fa-power-off"></i>
+    <span class="name">{{outlet.id}}</span>
+    <span class="pin">GPIO pin {{outlet.pin}}</span>
+  </button>
+
+  <div class="master">
+    <a href="" ng-click="turnAllOutletsOn()">all on</a>
+    <span class="muted-text">|</span>
+    <a href="" ng-click="turnAllOutletsOff()">all off</a>
+  </div>
+</div>

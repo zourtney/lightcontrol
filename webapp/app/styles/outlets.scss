@@ -1,0 +1,33 @@
+.header {
+  margin: 30px 0;
+
+  i {
+    font-size: 24px;
+    margin-right: 8px;
+    color: $gray-light;
+  }
+  
+  h3 {
+    display: inline;
+  }
+}
+
+.outlets {
+  .outlet {
+    display: inline-block;
+    margin: 0 10px 0 0;
+  }
+  .name {
+    font-size: 24px;
+    display: block;
+  }
+  .pin {
+    font-size: 12px;
+    color: $gray-lighter;
+  }
+
+  .master {
+    margin: 12px 0;
+    font-size: 18px;
+  }
+}
