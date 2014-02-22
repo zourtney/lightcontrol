@@ -5,15 +5,20 @@ angular.module('webappApp', [
   'ngCookies',
   'ngSanitize',
   'ngRoute',
-  //'outletServices'
+  'outletServices',
+  'schedulesServices'
 ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+      .when('/outlets', {
+        templateUrl: 'views/outlets.html',
+        controller: 'OutletsCtrl'
+      })
+      .when('/schedules', {
+        templateUrl: 'views/schedules.html',
+        controller: 'SchedulesCtrl'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/outlets'
       });
   });

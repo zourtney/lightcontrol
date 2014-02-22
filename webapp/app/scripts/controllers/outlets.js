@@ -1,6 +1,6 @@
 'use strict';
 
-/*angular.module('webappApp')
+angular.module('webappApp')
   .controller('OutletsCtrl', function($scope, Outlets, Outlet) {
     // Load outlets into array at startup
     $scope.outlets = Outlets.query();
@@ -37,4 +37,4 @@
     $scope.turnAllOutletsOff = function() {
       setAllOutlets(1);
     };
-  });*/
+  });

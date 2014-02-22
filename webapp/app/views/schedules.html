@@ -1,0 +1,18 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#outlets">Outlets</a></li>
+    <li class="active"><a ng-href="#schedules">Schedules</a></li>
+    <li><a ng-href="#about">About</a></li>
+  </ul>
+
+  <div class="title">
+    <i class="fa fa-power-off"></i>
+    <h3 class="text-muted">LightControl</h3>
+  </div>
+</div>
+
+<ul class="schedules">
+  <li ng-repeat="schedule in schedules">
+    {{schedule.name}}
+  </li>
+</ul>

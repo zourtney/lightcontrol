@@ -4,4 +4,22 @@ $fa-font-path: "/bower_components/font-awesome/fonts/";
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 @import 'sass-bootstrap/lib/bootstrap';
 
+.header {
+  .title {
+    margin: 20px 0 40px 0;
+    padding-top: 6px;
+
+    i {
+      font-size: 24px;
+      margin-right: 8px;
+      color: $gray-light;
+    }
+    
+    h3 {
+      display: inline;
+    }
+  }
+}
+
 @import 'outlets';
+@import 'schedules';
