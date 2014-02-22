@@ -3,26 +3,26 @@
         {
             "value": 0, 
             "initial": null, 
-            "id": "1", 
+            "id": "Unused", 
+            "pin": 12
+        }, 
+        {
+            "value": 1, 
+            "initial": null, 
+            "id": "Lamp", 
             "pin": 13
         }, 
         {
             "value": 0, 
             "initial": null, 
-            "id": "0", 
+            "id": "Fish tank filter", 
             "pin": 15
-        }, 
-        {
-            "value": 1, 
-            "initial": null, 
-            "id": "3", 
-            "pin": 11
         }, 
         {
             "value": 0, 
             "initial": null, 
-            "id": "2", 
-            "pin": 12
+            "id": "Fish tank light", 
+            "pin": 11
         }
     ]
 }
