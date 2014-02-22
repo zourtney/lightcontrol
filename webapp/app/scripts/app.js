@@ -6,7 +6,8 @@ angular.module('webappApp', [
   'ngSanitize',
   'ngRoute',
   'outletServices',
-  'schedulesServices'
+  'schedulesServices',
+  'aboutServices'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -17,6 +18,10 @@ angular.module('webappApp', [
       .when('/schedules', {
         templateUrl: 'views/schedules.html',
         controller: 'SchedulesCtrl'
+      })
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl'
       })
       .otherwise({
         redirectTo: '/outlets'

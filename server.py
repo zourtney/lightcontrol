@@ -5,6 +5,12 @@ import json
 from flask import Flask, jsonify, render_template, request, make_response
 from lightcontrol import Outlets, Scheduler
 
+version = {
+  'major': '1',
+  'minor': '3',
+  'patch': '0'
+}
+
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
@@ -26,6 +32,17 @@ def jsonify_array(serialized_array):
   resp = make_response(json.dumps(serialized_array, indent=4))
   resp.mimetype = 'application/json'
   return resp
+
+
+"""
+
+Version controller
+
+"""
+@app.route('/version/', methods=['GET'])
+@app.route('/api/version', methods=['GET'])
+def get_version():
+  return jsonify(version)
 
 
 
