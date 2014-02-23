@@ -2,7 +2,11 @@
 'use strict';
 
 
-var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
+//
+// Add / edit schedule modal controller
+//
+var ScheduleEditModalCtrl = function($scope, $modalInstance, method, schedule, Schedule) {
+  $scope.originalName = schedule.name;
   $scope.schedule = schedule;
 
   $scope.outletOptions = [
@@ -17,10 +21,17 @@ var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
   });
 
   $scope.ok = function() {
+    // Set values based on dropdowns.
     _.each($scope.schedule.outlets, function(outlet) {
       outlet.value = outlet.selectValue.value;
     });
-    $modalInstance.close($scope.schedule);
+
+    // Try to save...
+    schedule.originalName = $scope.originalName;
+    new Schedule(schedule)['$' + method]().then(function(resp) {
+      $scope.schedule = resp.data;
+      $modalInstance.close($scope.schedule);
+    });
   };
 
   $scope.cancel = function() {
@@ -29,20 +40,29 @@ var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
 };
 
 
-var ScheduleDeleteModalCtrl = function($scope, $modalInstance, schedule) {
+//
+// Delete schedule modal controller
+//
+var ScheduleDeleteModalCtrl = function($scope, $modalInstance, schedule, Schedule) {
   $scope.schedule = schedule;
 
   $scope.ok = function() {
-    $modalInstance.close($scope.schedule);
+    schedule.originalName = schedule.name;
+    new Schedule(schedule).$delete().then(function(data) {
+      $scope.schedule = data;
+      $modalInstance.close($scope.schedule);
+    });
   };
 
   $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
-  }
+  };
 };
 
 
-
+//
+// Schedules page controller
+//
 angular.module('webappApp')
   .controller('SchedulesCtrl', function($scope, Outlets, Schedules, Schedule, $modal) {
     // Load schedules into array at startup
@@ -66,8 +86,14 @@ angular.module('webappApp')
           templateUrl: 'views/schedule_modal.html',
           controller: ScheduleEditModalCtrl,
           resolve: {
+            method: function() {
+              return 'save';
+            },
             schedule: function() {
               return schedule;
+            },
+            Schedule: function() {
+              return Schedule;
             }
           }
         });
@@ -89,8 +115,14 @@ angular.module('webappApp')
         templateUrl: 'views/schedule_modal.html',
         controller: ScheduleEditModalCtrl,
         resolve: {
+          method: function() {
+            return 'update';
+          },
           schedule: function() {
             return angular.copy(self.schedule);
+          },
+          Schedule: function() {
+            return Schedule;
           }
         }
       });
@@ -98,10 +130,7 @@ angular.module('webappApp')
       // Save to server, using PUT
       //NOTE: setting 'originalName' so we PUT to the same URL. Consider switiching to numeric ID system for UIDs.
       modalInstance.result.then(function(schedule) {
-        schedule.originalName = self.schedule.name;
-        new Schedule(schedule).$update().then(function(data) {
-          self.schedule = data;
-        });
+        self.schedule = schedule;
       });
     };
 
@@ -115,20 +144,19 @@ angular.module('webappApp')
         resolve: {
           schedule: function() {
             return angular.copy(self.schedule);
+          },
+          Schedule: function() {
+            return Schedule;
           }
         }
       });
 
-      // DELETE from server
-      //NOTE: same 'originalName' junk as above. It's required (for now) in the angular resource.
       modalInstance.result.then(function(schedule) {
-        schedule.originalName = self.schedule.name;
-        new Schedule(schedule).$delete().then(function(data) {
-          var i = $scope.schedules.indexOf(_.findWhere($scope.schedules, { name: data.name }));
-          if (i >= 0) {
-            $scope.schedules.splice(i, 1);
-          }
-        });
+        // Remove from `$scope.schedules`.
+        var i = $scope.schedules.indexOf(_.findWhere($scope.schedules, { name: schedule.name }));
+        if (i >= 0) {
+          $scope.schedules.splice(i, 1);
+        }
       });
     };
   });
