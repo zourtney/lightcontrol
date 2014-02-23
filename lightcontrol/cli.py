@@ -27,6 +27,5 @@ class Cli(argparse.ArgumentParser):
     for k, v in self._outlets.iteritems():
       outlet = v.serialize()
       outlet['value'] = None if args[k] is None else (0 if args[k].lower() == 't' else 1)
-      print outlet
       data.append(outlet)
     return data

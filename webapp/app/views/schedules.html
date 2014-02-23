@@ -11,6 +11,11 @@
   </div>
 </div>
 
+<button class="btn btn-primary add-schedule" ng-click="add()">
+  <i class="fa fa-plus"></i>
+  Add schedule
+</button>
+
 <ul class="schedules list-unstyled">
   <li class="schedule" ng-repeat="schedule in schedules" ng-click="open()">
     <h4>{{schedule.name}}</h4>

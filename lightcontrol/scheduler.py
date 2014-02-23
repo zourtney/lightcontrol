@@ -45,11 +45,11 @@ class Scheduler(object):
       exe = client_exe
       for outlet in job['outlets']:
         if outlet['value'] is not None:
-          exe += ' -%s %s' % (outlet['id'], 't' if int(outlet['value']) == 0 else 'f')
+          exe += ' -"%s" %s' % (outlet['id'], 't' if int(outlet['value']) == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.setall(job['cron'])
-      #TODO: enabled flag
+      #TODO: enabled flag?
     crontab.write()
   
   def serialize(self):
