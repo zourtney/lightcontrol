@@ -24,7 +24,7 @@
       <div class="cron">{{schedule.cron}}</div>
       <ul class="schedule-outlets list-unstyled">
         <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
-          <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-primary' : '')">
+          <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-success' : '')">
             {{outlet.id}}
           </button>
         </li>
