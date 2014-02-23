@@ -17,18 +17,22 @@
 </button>
 
 <ul class="schedules list-unstyled">
-  <li class="schedule" ng-repeat="schedule in schedules" ng-click="open()">
-    <h4>{{schedule.name}}</h4>
-    <span class="next">Next occurs: {{schedule.next}}</span>
-    <div class="cron">{{schedule.cron}}</div>
-    <ul class="schedule-outlets list-unstyled">
-      <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
-        <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-primary' : '')">
-          {{outlet.id}}
-        </button>
-      </li>
-    </ul>
-    <i class="delete control fa fa-trash-o"></i>
-    <i class="edit control fa fa-edit"></i>
+  <li class="schedule" ng-repeat="schedule in schedules">
+    <div class="content" ng-click="open()">
+      <h4>{{schedule.name}}</h4>
+      <span class="next">Next occurs: {{schedule.next}}</span>
+      <div class="cron">{{schedule.cron}}</div>
+      <ul class="schedule-outlets list-unstyled">
+        <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
+          <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-primary' : '')">
+            {{outlet.id}}
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="controls">
+      <i class="delete control fa fa-trash-o" ng-click="delete()"></i>
+      <i class="edit control fa fa-edit" ng-click="open()"></i>
+    </div>
   </li>
 </ul>

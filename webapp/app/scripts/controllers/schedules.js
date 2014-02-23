@@ -2,10 +2,7 @@
 'use strict';
 
 
-// Please note that $modalInstance represents a modal window (instance) dependency.
-// It is not the same as the $modal service used above.
-
-var ModalInstanceCtrl = function ($scope, $modalInstance, schedule) {
+var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
   $scope.schedule = schedule;
 
   $scope.outletOptions = [
@@ -32,6 +29,19 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, schedule) {
 };
 
 
+var ScheduleDeleteModalCtrl = function($scope, $modalInstance, schedule) {
+  $scope.schedule = schedule;
+
+  $scope.ok = function() {
+    $modalInstance.close($scope.schedule);
+  };
+
+  $scope.cancel = function() {
+    $modalInstance.dismiss('cancel');
+  }
+};
+
+
 
 angular.module('webappApp')
   .controller('SchedulesCtrl', function($scope, Outlets, Schedules, Schedule, $modal) {
@@ -54,7 +64,7 @@ angular.module('webappApp')
         // Create the modal
         modalInstance = $modal.open({
           templateUrl: 'views/schedule_modal.html',
-          controller: ModalInstanceCtrl,
+          controller: ScheduleEditModalCtrl,
           resolve: {
             schedule: function() {
               return schedule;
@@ -77,7 +87,7 @@ angular.module('webappApp')
 
       modalInstance = $modal.open({
         templateUrl: 'views/schedule_modal.html',
-        controller: ModalInstanceCtrl,
+        controller: ScheduleEditModalCtrl,
         resolve: {
           schedule: function() {
             return angular.copy(self.schedule);
@@ -91,6 +101,33 @@ angular.module('webappApp')
         schedule.originalName = self.schedule.name;
         new Schedule(schedule).$update().then(function(data) {
           self.schedule = data;
+        });
+      });
+    };
+
+    $scope.delete = function() {
+      var self = this,
+          modalInstance;
+
+      modalInstance = $modal.open({
+        templateUrl: 'views/schedule_delete_modal.html',
+        controller: ScheduleDeleteModalCtrl,
+        resolve: {
+          schedule: function() {
+            return angular.copy(self.schedule);
+          }
+        }
+      });
+
+      // DELETE from server
+      //NOTE: same 'originalName' junk as above. It's required (for now) in the angular resource.
+      modalInstance.result.then(function(schedule) {
+        schedule.originalName = self.schedule.name;
+        new Schedule(schedule).$delete().then(function(data) {
+          var i = $scope.schedules.indexOf(_.findWhere($scope.schedules, { name: data.name }));
+          if (i >= 0) {
+            $scope.schedules.splice(i, 1);
+          }
         });
       });
     };
