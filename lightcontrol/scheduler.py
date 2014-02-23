@@ -6,13 +6,14 @@ from constants import CRON_APP_ID
 
 class Scheduler(object):
   """Manager object for outlet cron jobs"""
-  def __init__(self, root_path=None):
+  def __init__(self, root_path=None, outlets=None):
     self._root_path = root_path
+    self._outlets = outlets
     self.refresh()
 
   def refresh(self):
     self._crontab = CronTab('root')
-    self._cli = Cli()
+    self._cli = Cli(outlets=self._outlets)
     self._load()
 
   def _load(self):
@@ -30,18 +31,6 @@ class Scheduler(object):
           'cron': str(cron.render_time())
         }
     return self._jobs
-  
-  def __getitem__(self, key):
-    return self._jobs[key]
-
-  def __setitem__(self, key, item):
-    self._jobs[key] = item
-
-  def __delitem__(self, key):
-    del self._jobs[key]
-
-  def serialize(self):
-    return [v for k, v in self._jobs.iteritems()]
 
   def save(self):
     # Remove old lightcontrol cron jobs
@@ -62,3 +51,15 @@ class Scheduler(object):
       cron.setall(job['cron'])
       #TODO: enabled flag
     crontab.write()
+  
+  def serialize(self):
+    return [v for k, v in self._jobs.iteritems()]
+
+  def __getitem__(self, key):
+    return self._jobs[key]
+
+  def __setitem__(self, key, item):
+    self._jobs[key] = item
+
+  def __delitem__(self, key):
+    del self._jobs[key]

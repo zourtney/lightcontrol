@@ -47,3 +47,9 @@ class Outlets(object):
 
   def __getitem__(self, key):
     return self._pins[key]
+
+  def iterkeys(self):
+    return self._pins.iterkeys()
+
+  def iteritems(self):
+    return self._pins.iteritems()

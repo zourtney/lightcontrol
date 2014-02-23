@@ -20,7 +20,7 @@ app.debug = True
 
 # Pin control
 outlets = Outlets(settings_file=SETTINGS_FILE)
-scheduler = Scheduler(root_path=ROOT_PATH)
+scheduler = Scheduler(root_path=ROOT_PATH, outlets=outlets)
 
 
 """
