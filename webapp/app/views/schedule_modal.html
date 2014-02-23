@@ -13,12 +13,11 @@
     </div>
   </form>
   <form class="form-horizontal" role="form">
-    <div class="form-group" ng-repeat="outlet in mergedOutlets">
+    <div class="form-group" ng-repeat="outlet in schedule.outlets">
       <label for="scheduleOutlet{{outlet.id}}" class="col-sm-3 control-label">{{outlet.id}}</label>
-      <select id="scheduleOutlet{{outlet.id}}" class="form-control" value="{{outlet.value}}">
-        <option value="">no change</option>
-        <option value="0">on</option>
-        <option value="1">off</option>
+      <select id="scheduleOutlet{{outlet.id}}" class="form-control"
+          ng-model="outlet.selectValue"
+          ng-options="o.name for o in outletOptions">
       </select>
     </div>
   </form>

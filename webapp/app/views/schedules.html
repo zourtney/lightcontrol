@@ -18,7 +18,9 @@
     <div class="cron">{{schedule.cron}}</div>
     <ul class="schedule-outlets list-unstyled">
       <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
-        <button class="btn" ng-class="outlet.value === 0 ? 'btn-primary' : ''">{{outlet.id}}</button>
+        <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-primary' : '')">
+          {{outlet.id}}
+        </button>
       </li>
     </ul>
     <i class="delete control fa fa-trash-o"></i>

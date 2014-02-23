@@ -22,6 +22,10 @@
   .schedule-outlet {
     display: inline;
   }
+  .no-change {
+    text-decoration: line-through;
+    color: $gray-light;
+  }
   .control {
     position: absolute;
     font-size: 24px;

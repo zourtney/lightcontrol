@@ -1,3 +1,4 @@
+/*global _ */
 'use strict';
 
 
@@ -7,21 +8,24 @@
 var ModalInstanceCtrl = function ($scope, $modalInstance, schedule, Outlets) {
   $scope.schedule = schedule;
 
-  var allOutlets = Outlets.query(function(data) {
-    $scope.mergedOutlets = _.map(data, function(outlet) {
-      return _.extend({}, outlet, {
-        value: 1
-      });
-    });
+  $scope.outletOptions = [
+    { name: 'No change', value: null },
+    { name: 'On', value: 0 },
+    { name: 'Off', value: 1 }
+  ];
+
+  $scope.schedule.outlets = _.map($scope.schedule.outlets, function(outlet) {
+    outlet.selectValue = _.findWhere($scope.outletOptions, { value: outlet.value });
+    return outlet;
   });
 
-  /*$scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
-  };
+  // $scope.ok = function () {
+  //   $modalInstance.close($scope.selected.item);
+  // };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
-  };*/
+  };
 };
 
 
@@ -39,7 +43,6 @@ angular.module('webappApp')
         templateUrl: 'views/schedule_modal.html',
         controller: ModalInstanceCtrl,
         resolve: {
-
           schedule: function() {
             return self.schedule;
           }
