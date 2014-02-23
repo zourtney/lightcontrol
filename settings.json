@@ -7,13 +7,13 @@
             "pin": 12
         }, 
         {
-            "value": 1, 
+            "value": 0, 
             "initial": null, 
             "id": "Lamp", 
             "pin": 13
         }, 
         {
-            "value": 1, 
+            "value": 0, 
             "initial": null, 
             "id": "Fish tank filter", 
             "pin": 15

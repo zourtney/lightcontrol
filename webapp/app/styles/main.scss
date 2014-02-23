@@ -8,6 +8,9 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
   .title {
     margin: 20px 0 40px 0;
     padding-top: 6px;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
 
     i {
       font-size: 24px;
