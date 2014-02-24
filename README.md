@@ -33,7 +33,7 @@ Install the following dependencies using the [pip](https://pypi.python.org/pypi/
 Edit settings.json
 ------------------
 
-Now edit the *settings.json* file. Add an entry into the `pins` array for every GPIO pin you wish to let the server control.
+Now edit the *settings.json* file. Add an entry into the `switches` array for every GPIO pin you wish to let the server control.
 
     {
       "switches": [
@@ -49,7 +49,7 @@ Where:
 
 - `name`: unique identifier
 - `pin`: the GPIO pin to control
-- `value`: the current pins state. `0` for on, `1` for off.
+- `value`: the pin's current state. `0` for on, `1` for off.
 - `initial`: state to set the pin on server startup. `0` for on, `1` for off, `null` for no change.
 
 REST API
