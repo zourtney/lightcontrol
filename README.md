@@ -92,9 +92,9 @@ Data will be formatted like the following:
 Running the Server
 ------------------
 
-To start the HTTP server, run `server.py` from the command line.
+To start the HTTP server, run `server.py` from the command line. You will need to run as `sudo` to get access to the Raspberry Pi's GPIO pins.
 
-    python server.py
+    sudo ./server.py
 
 **Installing as a Service**
 
@@ -126,7 +126,7 @@ A full-featured webapp is available at the server root, [http://localhost:5000/]
 
 A command line interface is available by running *client.py*. In short, just define your switch name as an argument and *t* or *f* for turning the switch on or off (respectively).
 
-    ./client.py -"Desk lamp" t
+    sudo ./client.py -"Desk lamp" t
 
 **Mobile**
 
