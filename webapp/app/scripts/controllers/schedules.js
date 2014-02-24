@@ -9,20 +9,20 @@ var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
   $scope.originalName = schedule.name;
   $scope.schedule = schedule;
 
-  $scope.outletOptions = [
+  $scope.switchOptions = [
     { name: 'No change', value: null },
     { name: 'On', value: 0 },
     { name: 'Off', value: 1 }
   ];
 
-  $scope.schedule.outlets = _.map($scope.schedule.outlets, function(outlet) {
-    outlet.selectValue = _.findWhere($scope.outletOptions, { value: outlet.value });
-    return outlet;
+  $scope.schedule.switches = _.map($scope.schedule.switches, function(s) {
+    s.selectValue = _.findWhere($scope.switchOptions, { value: s.value });
+    return s;
   });
 
   $scope.ok = function() {
-    _.each($scope.schedule.outlets, function(outlet) {
-      outlet.value = outlet.selectValue.value;
+    _.each($scope.schedule.switches, function(s) {
+      s.value = s.selectValue.value;
     });
     $modalInstance.close($scope.schedule);
   };
@@ -53,7 +53,7 @@ var ScheduleDeleteModalCtrl = function($scope, $modalInstance, schedule) {
 // Schedules page controller
 //
 angular.module('webappApp')
-  .controller('SchedulesCtrl', function($scope, Outlets, Schedules, Schedule, $modal) {
+  .controller('SchedulesCtrl', function($scope, Switches, Schedules, Schedule, $modal) {
     // Load schedules into array at startup
     $scope.schedules = Schedules.query();
 
@@ -61,10 +61,10 @@ angular.module('webappApp')
       var modalInstance,
           schedule = {};
 
-      Outlets.query(function(data) {
-        // Create blank schedule, with outlets preset to 'no change'.
+      Switches.query(function(data) {
+        // Create blank schedule, with switches preset to 'no change'.
         schedule = {
-          outlets: _.map(data, function(o) {
+          switches: _.map(data, function(o) {
             o.value = null;
             return o;
           })
@@ -109,8 +109,8 @@ angular.module('webappApp')
       //NOTE: setting 'originalName' so we PUT to the same URL. Consider switiching to numeric ID system for UIDs.
       modalInstance.result.then(function(schedule) {
         schedule.originalName = self.schedule.name;
-        new Schedule(schedule).$save().then(function(resp) {
-          self.schedule = resp.data;
+        new Schedule(schedule).$update().then(function(data) {
+          self.schedule = data;
         });
       });
     };

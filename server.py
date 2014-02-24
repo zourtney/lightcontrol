@@ -3,7 +3,7 @@
 import os
 import json
 from flask import Flask, jsonify, render_template, request, make_response
-from lightcontrol import Outlets, Scheduler
+from lightcontrol import Switches, Scheduler
 
 version = {
   'major': '1',
@@ -19,8 +19,8 @@ app = Flask(__name__, template_folder='webapp/app', static_folder='webapp/app', 
 app.debug = True
 
 # Pin control
-outlets = Outlets(settings_file=SETTINGS_FILE)
-scheduler = Scheduler(root_path=ROOT_PATH, outlets=outlets)
+switches = Switches(settings_file=SETTINGS_FILE)
+scheduler = Scheduler(root_path=ROOT_PATH, switches=switches)
 
 
 """
@@ -48,36 +48,32 @@ def get_version():
 
 """
 
-Outlets controller
+Switches controller
 
 """
-@app.route('/outlets/', methods=['GET'])
-@app.route('/api/outlets/', methods=['GET'])
+@app.route('/api/switches/', methods=['GET'])
 def get_all():
-  return jsonify_array(outlets.serialize())
+  return jsonify_array(switches.serialize())
 
-@app.route('/outlets/', methods=['PUT'])
-@app.route('/api/outlets/', methods=['PUT'])
+@app.route('/api/switches/', methods=['PUT'])
 def set_all():
   for v in json.loads(request.data):
-    if v['value'] is not None:   # null check so we can batch save schedule.outlet payloads
-      outlets[v['id']].value = v['value']
-  outlets.save()
-  return jsonify_array(outlets.serialize())
+    if v['value'] is not None:   # null check so we can batch save schedule.switches payloads
+      switches[v['name']].value = v['value']
+  switches.save()
+  return jsonify_array(switches.serialize())
 
-@app.route('/outlets/<num>/', methods=['GET'])
-@app.route('/api/outlets/<num>', methods=['GET'])
+@app.route('/api/switches/<num>', methods=['GET'])
 def get_out(num):
-  return jsonify(outlets[num].serialize())
+  return jsonify(switches[num].serialize())
 
-@app.route('/outlets/<num>/', methods=['PUT'])
-@app.route('/api/outlets/<num>', methods=['PUT'])
+@app.route('/api/switches/<num>', methods=['PUT'])
 def set_out(num):
-  pin = outlets[num]
+  pin = switches[num]
   requestJson = json.loads(request.data)
   pin.value = int(requestJson['value'])
-  outlets.save()
-  return jsonify(outlets[num].serialize())
+  switches.save()
+  return jsonify(switches[num].serialize())
 
 
 

@@ -1,6 +1,6 @@
 <div class="header">
   <ul class="nav nav-pills pull-right">
-    <li><a ng-href="#outlets">Outlets</a></li>
+    <li><a ng-href="#switches">Switches</a></li>
     <li class="active"><a ng-href="#schedules">Schedules</a></li>
     <li><a ng-href="#about">About</a></li>
   </ul>
@@ -22,10 +22,10 @@
       <h4>{{schedule.name}}</h4>
       <span class="next">Next occurs: {{schedule.next}}</span>
       <div class="cron">{{schedule.cron}}</div>
-      <ul class="schedule-outlets list-unstyled">
-        <li class="schedule-outlet" ng-repeat="outlet in schedule.outlets">
-          <button class="btn" ng-class="outlet.value === null ? 'btn-default no-change' : (outlet.value === 0 ? 'btn-success' : '')">
-            {{outlet.id}}
+      <ul class="schedule-switches list-unstyled">
+        <li class="schedule-switch" ng-repeat="switch in schedule.switches">
+          <button class="btn" ng-class="switch.value === null ? 'btn-default no-change' : (switch.value === 0 ? 'btn-success' : '')">
+            {{switch.name}}
           </button>
         </li>
       </ul>

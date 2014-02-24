@@ -1,27 +1,27 @@
 {
-    "pins": [
+    "switches": [
         {
             "value": 1, 
             "initial": null, 
-            "id": "Unused", 
+            "name": "Unused", 
             "pin": 12
         }, 
         {
             "value": 0, 
             "initial": null, 
-            "id": "Lamp", 
+            "name": "Lamp", 
             "pin": 13
         }, 
         {
             "value": 1, 
             "initial": null, 
-            "id": "Fish tank filter", 
+            "name": "Fish tank filter", 
             "pin": 15
         }, 
         {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
-            "id": "Fish tank light", 
+            "name": "Fish tank light", 
             "pin": 11
         }
     ]

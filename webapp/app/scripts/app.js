@@ -6,15 +6,15 @@ angular.module('webappApp', [
   'ngSanitize',
   'ngRoute',
   'ui.bootstrap',
-  'outletServices',
+  'switchesServices',
   'schedulesServices',
   'aboutServices'
 ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/outlets', {
-        templateUrl: 'views/outlets.html',
-        controller: 'OutletsCtrl'
+      .when('/switches', {
+        templateUrl: 'views/switches.html',
+        controller: 'SwitchesCtrl'
       })
       .when('/schedules', {
         templateUrl: 'views/schedules.html',
@@ -25,6 +25,6 @@ angular.module('webappApp', [
         controller: 'AboutCtrl'
       })
       .otherwise({
-        redirectTo: '/outlets'
+        redirectTo: '/switches'
       });
   });

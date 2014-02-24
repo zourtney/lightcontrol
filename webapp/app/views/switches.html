@@ -1,0 +1,29 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#switches">Switches</a></li>
+    <li><a ng-href="#schedules">Schedules</a></li>
+    <li><a ng-href="#about">About</a></li>
+  </ul>
+
+  <a class="title" ng-href="/">
+    <i class="fa fa-power-off"></i>
+    <h3 class="text-muted">LightControl</h3>
+  </a>
+</div>
+
+<div class="switches">
+  <button type="button" ng-repeat="switch in switches"
+    class="switch btn btn-lg" ng-class="switch.value === 0 ? 'btn-success' : ''"
+    ng-click="toggleSwitch()"
+  >
+    <i class="fa fa-power-off"></i>
+    <span class="name">{{switch.name}}</span>
+    <span class="pin">GPIO pin {{switch.pin}}</span>
+  </button>
+
+  <div class="master">
+    <a href="" ng-click="turnAllSwitchesOn()">all on</a>
+    <span class="muted-text">|</span>
+    <a href="" ng-click="turnAllSwitchesOff()">all off</a>
+  </div>
+</div>

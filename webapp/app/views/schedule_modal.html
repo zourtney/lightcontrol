@@ -13,11 +13,11 @@
     </div>
   </form>
   <form class="form-horizontal" role="form">
-    <div class="form-group" ng-repeat="outlet in schedule.outlets">
-      <label for="scheduleOutlet{{outlet.id}}" class="col-sm-3 control-label">{{outlet.id}}</label>
-      <select id="scheduleOutlet{{outlet.id}}" class="form-control"
-          ng-model="outlet.selectValue"
-          ng-options="o.name for o in outletOptions">
+    <div class="form-group" ng-repeat="switch in schedule.switches">
+      <label for="scheduleSwitch{{switch.id}}" class="col-sm-3 control-label">{{switch.name}}</label>
+      <select id="scheduleSwitch{{switch.id}}" class="form-control"
+          ng-model="switch.selectValue"
+          ng-options="o.name for o in switchOptions">
       </select>
     </div>
   </form>

@@ -5,15 +5,15 @@ from constants import CRON_APP_ID
 
 
 class Scheduler(object):
-  """Manager object for outlet cron jobs"""
-  def __init__(self, root_path=None, outlets=None):
+  """Manager object for switch-controlling cron jobs"""
+  def __init__(self, root_path=None, switches=None):
     self._root_path = root_path
-    self._outlets = outlets
+    self._switches = switches
     self.refresh()
 
   def refresh(self):
     self._crontab = CronTab('root')
-    self._cli = Cli(outlets=self._outlets)
+    self._cli = Cli(switches=self._switches)
     self._load()
 
   def _load(self):
@@ -25,7 +25,7 @@ class Scheduler(object):
         name = comment[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
         self._jobs[name] = {
           'name': name,
-          'outlets': self._cli.get_outlets(command=str(cron.command)),
+          'switches': self._cli.get_switches(command=str(cron.command)),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
           'cron': str(cron.render_time())
@@ -43,9 +43,9 @@ class Scheduler(object):
     client_exe = '%s/client.py' % self._root_path
     for job in self._jobs.itervalues():
       exe = client_exe
-      for outlet in job['outlets']:
-        if outlet['value'] is not None:
-          exe += ' -"%s" %s' % (outlet['id'], 't' if int(outlet['value']) == 0 else 'f')
+      for s in job['switches']:
+        if s['value'] is not None:
+          exe += ' -"%s" %s' % (s['name'], 't' if int(s['value']) == 0 else 'f')
       
       cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
       cron.setall(job['cron'])
