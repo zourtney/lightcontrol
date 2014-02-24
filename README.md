@@ -1,5 +1,5 @@
-Light Control Server
-====================
+Light Control Server 2.0
+========================
 
 This application provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
 
@@ -36,9 +36,9 @@ Edit settings.json
 Now edit the *settings.json* file. Add an entry into the `pins` array for every GPIO pin you wish to let the server control.
 
     {
-      "pins": [
+      "switches": [
         {
-          "id": "1",
+          "name": "Desk lamp",
           "pin": 13,
           "value": 1,
           "initial": null
@@ -47,7 +47,7 @@ Now edit the *settings.json* file. Add an entry into the `pins` array for every 
 
 Where:
 
-- `id`: unique identifier
+- `name`: unique identifier
 - `pin`: the GPIO pin to control
 - `value`: the current pins state. `0` for on, `1` for off.
 - `initial`: state to set the pin on server startup. `0` for on, `1` for off, `null` for no change.
@@ -55,22 +55,22 @@ Where:
 REST API
 --------
 
-**outlets**
+**switches**
 
-- `GET /outlets/` returns info about all server-managed GPIO pins and their current `value`s.
-- `PUT /outlets/` updates info about multiple server-managed GPIO pins. Useful for batch operations. All fields except `id` are changeable.
-- `GET /outlets/[id]` returns info about a single server-managed GPIO pin. `id` is that which is defined by the `id` field in *settings.json*.
-- `PUT /outlets/[id]` updates info about a single server-managed GPIO pin. All fields except `id` are changeable.
+- `GET /api/switches/` returns info about all server-managed GPIO pins and their current `value`s.
+- `PUT /api/switches/` updates info about multiple server-managed GPIO pins. Useful for batch operations. All fields except `name` are changeable.
+- `GET /api/switches/[name]` returns info about a single server-managed GPIO pin. `name` is that which is defined by the `name` field in *settings.json*.
+- `PUT /api/switches/[name]` updates info about a single server-managed GPIO pin. All fields except `name` are changeable.
 
 Data will be formatted just like the pin definitions in *settings.json*.
 
 **schedules**
 
-- `GET /schedules/` returns a list of all server-managed cron schedules.
-- `POST /schedules/` creates a new server-managed cron schedule.
-- `GET /schedules/[name]` returns a single server-managed cron schedule.
-- `PUT /schedules/[name]` updates a single server-managed cron schedule.
-- `DELETE /schedules/[name]` deletes a single server-managed cron schedule.
+- `GET /api/schedules/` returns a list of all server-managed cron schedules.
+- `POST /api/schedules/` creates a new server-managed cron schedule.
+- `GET /api/schedules/[name]` returns a single server-managed cron schedule.
+- `PUT /api/schedules/[name]` updates a single server-managed cron schedule.
+- `DELETE /api/schedules/[name]` deletes a single server-managed cron schedule.
 
 Data will be formatted like the following:
 
@@ -79,11 +79,13 @@ Data will be formatted like the following:
       "next": "2014-02-19 12:00:00", 
       "enabled": true, 
       "name": "Lamp on", 
-      "outlets": [
+      "switches": [
         {
-          "id": "0", 
-          "value": 0
-        }
+          "name": "Desk lamp", 
+          "value": 0,
+          ...
+        },
+        ...
       ]
     }
 
@@ -96,7 +98,7 @@ To start the HTTP server, run `server.py` from the command line.
 
 **Installing as a Service**
 
-You can make the Light Control Server behave like a Unix service by dropping the *service/lightcontrol.sh* in your */etc/init.d* directory.
+You can make the Light Control Server behave like a Unix service by dropping *service/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as Light Control Server's directory. Change this line if you installed the application elsewhere.
 
     sudo cp service/lightcontrol.sh /etc/init.d
     sudo chmod 755 /etc/init.d/lightcontrol.sh
@@ -116,15 +118,16 @@ For more details, check out [this link](http://www.stuffaboutcode.com/2012/06/ra
 Clients
 -------
 
-**Provided**
+**Webapp**
 
-This application comes with the following Light Control clients:
+A full-featured webapp is available at the server root, [http://localhost:5000/](http://localhost:5000).
 
-- A command line interface (*client.py*)
-- A simple web client (*http://localhost:5000*)
+**Command line interface**
 
-Both of these are currently restricted to controlling four (4) pins. This is a legacy laziness that will be [cleaned up](https://bitbucket.org/zourtney/lightcontrol/issue/6/small-make-cli-and-web-client-handle) in due time.
+A command line interface is available by running *client.py*. In short, just define your switch name as an argument and *t* or *f* for turning the switch on or off (respectively).
+
+    ./client.py -"Desk lamp" t
 
 **Mobile**
 
-There is a full featured [Windows Phone client](http://www.windowsphone.com/en-us/store/app/lightcontrol/76eaf03e-8970-4957-bcca-d59486d2475f) available for free in the store.
+There is a full-featured [Windows Phone client](http://www.windowsphone.com/en-us/store/app/lightcontrol/76eaf03e-8970-4957-bcca-d59486d2475f) available for free in the store. This client will be updated to be 2.0 compatible in the near future.
