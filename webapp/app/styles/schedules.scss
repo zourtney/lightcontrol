@@ -1,5 +1,7 @@
+@import 'sass-bootstrap/lib/bootstrap';
+
 .add-schedule {
-  margin: 0 0 20px 10px;
+  margin: 0 0 20px 10px !important;   // Now bootstrap is being greedy, overriding my margin.
 }
 
 .schedules {
@@ -28,6 +30,7 @@
     }
     .schedule-switch {
       display: inline;
+      margin: 0 2px;   // because htmlmin is going to be rude and strip out the spacing
     }
     .no-change {
       text-decoration: line-through;

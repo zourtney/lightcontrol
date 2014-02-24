@@ -1,59 +1,66 @@
 /*global _ */
 'use strict';
 
+var webAppModule = angular.module('webappApp');
+
+
 
 //
 // Add / edit schedule modal controller
 //
-var ScheduleEditModalCtrl = function($scope, $modalInstance, schedule) {
-  $scope.originalName = schedule.name;
-  $scope.schedule = schedule;
+webAppModule.controller('ScheduleEditModalCtrl', ['$scope', '$modalInstance', 'schedule',
+  function($scope, $modalInstance, schedule) {
+    $scope.originalName = schedule.name;
+    $scope.schedule = schedule;
 
-  $scope.switchOptions = [
-    { name: 'No change', value: null },
-    { name: 'On', value: 0 },
-    { name: 'Off', value: 1 }
-  ];
+    $scope.switchOptions = [
+      { name: 'No change', value: null },
+      { name: 'On', value: 0 },
+      { name: 'Off', value: 1 }
+    ];
 
-  $scope.schedule.switches = _.map($scope.schedule.switches, function(s) {
-    s.selectValue = _.findWhere($scope.switchOptions, { value: s.value });
-    return s;
-  });
-
-  $scope.ok = function() {
-    _.each($scope.schedule.switches, function(s) {
-      s.value = s.selectValue.value;
+    $scope.schedule.switches = _.map($scope.schedule.switches, function(s) {
+      s.selectValue = _.findWhere($scope.switchOptions, { value: s.value });
+      return s;
     });
-    $modalInstance.close($scope.schedule);
-  };
 
-  $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
-  };
-};
+    $scope.ok = function() {
+      _.each($scope.schedule.switches, function(s) {
+        s.value = s.selectValue.value;
+      });
+      $modalInstance.close($scope.schedule);
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  }
+]);
 
 
 //
 // Delete schedule modal controller
 //
-var ScheduleDeleteModalCtrl = function($scope, $modalInstance, schedule) {
-  $scope.schedule = schedule;
+webAppModule.controller('ScheduleDeleteModalCtrl', ['$scope', '$modalInstance', 'schedule',
+  function($scope, $modalInstance, schedule) {
+    $scope.schedule = schedule;
 
-  $scope.ok = function() {
-    $modalInstance.close($scope.schedule);
-  };
+    $scope.ok = function() {
+      $modalInstance.close($scope.schedule);
+    };
 
-  $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
-  };
-};
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  }
+]);
 
 
 //
 // Schedules page controller
 //
-angular.module('webappApp')
-  .controller('SchedulesCtrl', function($scope, Switches, Schedules, Schedule, $modal) {
+webAppModule.controller('SchedulesCtrl', ['$scope', 'Switches', 'Schedules', 'Schedule', '$modal',
+  function($scope, Switches, Schedules, Schedule, $modal) {
     // Load schedules into array at startup
     $scope.schedules = Schedules.query();
 
@@ -73,7 +80,7 @@ angular.module('webappApp')
         // Create the modal
         modalInstance = $modal.open({
           templateUrl: 'views/schedule_modal.html',
-          controller: ScheduleEditModalCtrl,
+          controller: 'ScheduleEditModalCtrl',
           resolve: {
             schedule: function() {
               return schedule;
@@ -97,7 +104,7 @@ angular.module('webappApp')
 
       modalInstance = $modal.open({
         templateUrl: 'views/schedule_modal.html',
-        controller: ScheduleEditModalCtrl,
+        controller: 'ScheduleEditModalCtrl',
         resolve: {
           schedule: function() {
             return angular.copy(self.schedule);
@@ -121,7 +128,7 @@ angular.module('webappApp')
 
       modalInstance = $modal.open({
         templateUrl: 'views/schedule_delete_modal.html',
-        controller: ScheduleDeleteModalCtrl,
+        controller: 'ScheduleDeleteModalCtrl',
         resolve: {
           schedule: function() {
             return angular.copy(self.schedule);
@@ -140,4 +147,5 @@ angular.module('webappApp')
         });
       });
     };
-  });
+  }
+]);

@@ -15,7 +15,7 @@ ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
 # Super simple web service
-app = Flask(__name__, template_folder='webapp/app', static_folder='webapp/app', static_url_path='')
+app = Flask(__name__, template_folder='webapp/dist', static_folder='webapp/dist', static_url_path='')
 app.debug = True
 
 # Pin control
