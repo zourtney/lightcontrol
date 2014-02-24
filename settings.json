@@ -1,7 +1,7 @@
 {
     "pins": [
         {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
             "id": "Unused", 
             "pin": 12
@@ -13,7 +13,7 @@
             "pin": 13
         }, 
         {
-            "value": 0, 
+            "value": 1, 
             "initial": null, 
             "id": "Fish tank filter", 
             "pin": 15

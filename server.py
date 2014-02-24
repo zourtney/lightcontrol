@@ -60,7 +60,8 @@ def get_all():
 @app.route('/api/outlets/', methods=['PUT'])
 def set_all():
   for v in json.loads(request.data):
-    outlets[v['id']].value = v['value']
+    if v['value'] is not None:   # null check so we can batch save schedule.outlet payloads
+      outlets[v['id']].value = v['value']
   outlets.save()
   return jsonify_array(outlets.serialize())
 

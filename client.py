@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import requests
 import json
-from lightcontrol import Cli
+from lightcontrol import Outlets, Cli
+
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
 
 def print_message(msg, overwrite=False):
@@ -16,18 +20,13 @@ def print_message(msg, overwrite=False):
 
 
 def main(argv):
-  parser = Cli()
+  outlets = Outlets(settings_file=SETTINGS_FILE)
+  parser = Cli(outlets=outlets)
   args = parser.parse_args()
-  url = args.destination or 'http://localhost:5000/outlets/'
-
-  # Get the current dataset.
-  print_message('Fetching current status...')
-  r = requests.get(url)
-  data = r.json()
-  print_message('Fetching current status...success!', overwrite=True)
+  url = args.destination or 'http://localhost:5000/api/outlets/'
 
   # Update switch data based on arguments, then PUT to server
-  data = parser.get_outlets(args=args, switch_data=data)
+  data = parser.get_outlets(args=args)
   print_message('Setting switches...')
   r = requests.put(url, json.dumps(data))
   data = r.json()
