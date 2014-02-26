@@ -6,6 +6,10 @@ This application provides a simple RESTful API for manipulating a Raspberry Pi's
  - Direct on/off GPIO pin manipulation
  - Scheduled GPIO pin manipulation (via cron)
 
+Pictures of my "rev 1" hardware build are available on [Google+](https://plus.google.com/photos/118263545785118510462/albums/5912161667761819489).
+
+![Full setup with breadboard](https://lh5.googleusercontent.com/dqtZ3hYK_oj9PdgO1452ptzaGhncK02jqp52HKISY0I=w303-h202-p-no) ![Lamp](https://lh3.googleusercontent.com/xAAz11mul-TI-cgENnAlM2fh0Vg04nQPkKvpHy7le94=w338-h225-p-no)
+
 Initial Setup
 -------------
 
