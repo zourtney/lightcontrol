@@ -25,7 +25,7 @@ class Scheduler(object):
         name = comment[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
         self._jobs[name] = {
           'name': name,
-          'switches': self._cli.serialize_command(command=str(cron.command)),
+          'switches': self._cli.get_switches_for_command(command=str(cron.command)),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
           'cron': str(cron.render_time())

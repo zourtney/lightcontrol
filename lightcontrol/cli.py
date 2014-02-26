@@ -18,7 +18,7 @@ class Cli(argparse.ArgumentParser):
   def parse_command(self, command):
     return self.parse_args(shlex.split(command)[1:])  # parse everything except the first item, the executable
 
-  def serialize_command(self, args=None, command=None):
+  def get_switches_for_command(self, args=None, command=None):
     if args is None:
       args = self.parse_command(command)
     args = vars(args)

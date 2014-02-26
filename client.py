@@ -26,7 +26,7 @@ def main(argv):
   url = args.destination or 'http://localhost:5000/api/switches/'
 
   # Update switch data based on arguments, then PUT to server
-  data = parser.serialize_command(args=args)
+  data = parser.get_switches_for_command(args=args)
   print_message('Setting switches...')
   r = requests.put(url, json.dumps(data))
   data = r.json()
