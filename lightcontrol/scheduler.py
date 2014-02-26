@@ -28,7 +28,7 @@ class Scheduler(object):
           'switches': self._cli.get_switches_for_command(command=str(cron.command)),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
-          'cron': str(cron.render_time())
+          'cron': str(cron.slices.render())
         }
     return self._jobs
 
