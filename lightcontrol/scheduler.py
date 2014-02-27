@@ -40,7 +40,7 @@ class Scheduler(object):
       crontab.remove(old_crons.pop())
 
     # Add new ones
-    client_exe = '%s/client.py' % self._root_path
+    client_exe = '%s/cli.py' % self._root_path
     for job in self._jobs.itervalues():
       exe = client_exe
       for s in job['switches']:

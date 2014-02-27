@@ -1,22 +1,31 @@
+import os
 import getopt
 import shlex
 import argparse
 import copy
 
 
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+SETTINGS_FILE = ROOT_PATH + '/settings.json'
+
+
 class Cli(argparse.ArgumentParser):
-  def __init__(self, switches=None, *args, **kwargs):
+  def __init__(self, *args, **kwargs):
     super(Cli, self).__init__(*args, **kwargs)
-    self._switches = switches
     self._add_arguments()
 
   def _add_arguments(self):
-    self.add_argument('-d', '--destination', help='Destination server path. Default is http://localhost:5000/api/switches/')
-    for k in self._switches.iterkeys():
-      self.add_argument('-' + k, metavar='t|f', help='Set value for ' + k + '. Use "t" or "f".')
+    self.add_argument('start', nargs='?', help='starts the server')
+    self.add_argument('--settings', default=SETTINGS_FILE, help='specify settings file location')  # http://stackoverflow.com/questions/7625786/type-dict-in-argparse-add-argument
+    self.add_argument('-s', '--switch', nargs='?', help='set switch using "name=value"', action='append')
 
-  def parse_command(self, command):
-    return self.parse_args(shlex.split(command)[1:])  # parse everything except the first item, the executable
+  @property
+  def switches(self):
+      return self.switches
+  @switches.setter
+  def switches(self, value):
+      self.switches = value
+  
 
   def get_switches_for_command(self, args=None, command=None):
     if args is None:

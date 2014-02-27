@@ -126,7 +126,7 @@ A full-featured webapp is available at the server root, [http://localhost:5000/]
 
 A command line interface is available by running *client.py*. In short, just define your switch name as an argument and *t* or *f* for turning the switch on or off (respectively).
 
-    sudo ./client.py -"Desk lamp" t
+    sudo ./cli.py -"Desk lamp" t
 
 **Mobile**
 

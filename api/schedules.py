@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, request
-from .helpers import jsonify_array
+from .helpers import jsonify_array, proxy_get
 
 schedules_api = Blueprint('schedules_api', __name__, url_prefix='/api')
 
@@ -42,3 +42,16 @@ def init_schedules_api(scheduler):
     return jsonify(job)
 
   return schedules_api
+
+
+
+def add_zone_schedules(blueprint=None, url_prefix='/', dest_url=None):
+  @blueprint.route(url_prefix + '/schedules/', methods=['GET'])
+  def get_schedule():
+    return proxy_get(url=dest_url + '/api/schedules',
+                     fallback_url=dest_url + '/schedules')  # legacy
+
+  @blueprint.route(url_prefix + '/schedules/<name>', methods=['GET'])
+  def get_one_schedule(name):
+    return proxy_get(url=dest_url + '/api/schedules/' + name,
+                     fallback_url=dest_url + '/schedules/' + name + '/')  # legacy

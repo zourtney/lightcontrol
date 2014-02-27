@@ -4,8 +4,8 @@ version_api = Blueprint('version_api', __name__, url_prefix='/api')
 
 #TODO: centralize
 version = {
-  'major': '1',
-  'minor': '3',
+  'major': '2',
+  'minor': '0',
   'patch': '0'
 }
 
