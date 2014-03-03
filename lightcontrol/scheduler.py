@@ -1,19 +1,18 @@
-import os
+import copy
 from crontab import CronTab
-from cli import Cli
+from cli import Cli, CliNamespace
 from constants import CRON_APP_ID
 
 
 class Scheduler(object):
   """Manager object for switch-controlling cron jobs"""
-  def __init__(self, root_path=None, switches=None):
-    self._root_path = root_path
-    self._switches = switches
+  def __init__(self, settings=None, updater_exe=None):
+    self._settings = settings
+    self._updater_exe = updater_exe
     self.refresh()
 
   def refresh(self):
     self._crontab = CronTab('root')
-    self._cli = Cli(switches=self._switches)
     self._load()
 
   def _load(self):
@@ -25,12 +24,22 @@ class Scheduler(object):
         name = comment[i + len(CRON_APP_ID):].strip()  # get string after CRON_APP_ID
         self._jobs[name] = {
           'name': name,
-          'switches': self._cli.get_switches_for_command(command=str(cron.command)),
+          'switches': self._parse_switches(command=cron.command),
           'enabled': cron.is_enabled(),
           'next': str(cron.schedule().get_next()),
           'cron': str(cron.slices.render())
         }
     return self._jobs
+
+  def _parse_switches(self, command=None):
+    args = Cli().parse_args(command=command)
+    ret = copy.deepcopy(self._settings['switches'])
+    for s in ret:
+      s['value'] = args.switches[s['name']] if s['name'] in args.switches else None
+    return ret
+
+  def _generate_switches(self, switches):
+    return CliNamespace.switches_to_command(switches)
 
   def save(self):
     # Remove old lightcontrol cron jobs
@@ -40,14 +49,11 @@ class Scheduler(object):
       crontab.remove(old_crons.pop())
 
     # Add new ones
-    client_exe = '%s/cli.py' % self._root_path
     for job in self._jobs.itervalues():
-      exe = client_exe
-      for s in job['switches']:
-        if s['value'] is not None:
-          exe += ' -"%s" %s' % (s['name'], 't' if int(s['value']) == 0 else 'f')
-      
-      cron = crontab.new(command=exe, comment='%s %s' %(CRON_APP_ID, job['name']))
+      args = CliNamespace()
+      args.switches = job['switches']
+      cron = crontab.new(command='%s %s' % (self._updater_exe, args.serialize()),
+                         comment='%s %s' % (CRON_APP_ID, job['name']))
       cron.setall(job['cron'])
       #TODO: enabled flag?
     crontab.write()

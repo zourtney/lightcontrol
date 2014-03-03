@@ -1,8 +1,9 @@
+import os
 import json
 
 class Settings(dict):
-  def __init__(self, filename=None):
-    self._filename = filename
+  def __init__(self, file=None, filename=None):
+    self._filename = filename or os.path.abspath(file.name)
     self._load()
 
   def _load(self):

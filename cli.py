@@ -2,12 +2,10 @@
 
 import os
 import sys
-import requests
 import json
-from lightcontrol import Switches, Cli
+from lightcontrol import Switches, Cli, Settings
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-SETTINGS_FILE = ROOT_PATH + '/settings.json'
 
 
 def print_message(msg, overwrite=False):
@@ -22,14 +20,26 @@ def print_message(msg, overwrite=False):
 def main(argv):
   parser = Cli()
   args = parser.parse_args()
+
+  # Load settings
+  if args.settings:
+    settings = Settings(file=args.settings)
+  else:
+    settings = Settings(filename=ROOT_PATH + '/settings.json')
+
+  # Command line overrides
+  if args.port:
+    settings['port'] = args.port
+  if args.debug:
+    settings['debug'] = True
   
   if args.start:
     # Start server
-    print 'Fiar this thang up!'
+    print 'Starting server on http://0.0.0.0:%s [debug=%s]' % (settings['port'], settings['debug'])
   
   if args.switch:
-    switch_values = dict(s.split('=') for s in args.switch)
-    print switch_values
+    print args.switches
+
 
   #s = dict(arg.split('=') for arg in args.switch)  # NOTE: can't have '=' in name or value!
   #print s

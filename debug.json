@@ -1,0 +1,36 @@
+{
+    "port": 5001,
+    "debug": true,
+    "zones": [
+        {
+            "name": "Living room",
+            "address": "10.0.1.7:5000"
+        }
+    ],
+    "switches": [
+        {
+            "value": 1, 
+            "initial": null, 
+            "name": "Unused", 
+            "pin": 12
+        }, 
+        {
+            "value": 0, 
+            "initial": null, 
+            "name": "Lamp", 
+            "pin": 13
+        }, 
+        {
+            "value": 0, 
+            "initial": null, 
+            "name": "Fish tank filter", 
+            "pin": 15
+        }, 
+        {
+            "value": 1, 
+            "initial": null, 
+            "name": "Fish tank light", 
+            "pin": 11
+        }
+    ]
+}   

@@ -2,37 +2,63 @@ import os
 import getopt
 import shlex
 import argparse
-import copy
 
 
-ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-SETTINGS_FILE = ROOT_PATH + '/settings.json'
+class CliNamespace(argparse.Namespace):
+  def __init__(self, *args, **kwargs):
+    super(CliNamespace, self).__init__(*args, **kwargs)
+
+  @staticmethod
+  def parse_switches(command_array=None):
+    ret = {}
+    for s in command_array:
+      params = s.split('=')
+      if len(params) == 2:
+        ret[params[0]] = int(params[1])
+    return ret
+
+  def serialize(self):
+    ret = ''
+    if self.start:
+      ret += ' start'
+    if self.debug:
+      ret += ' -d'
+    if self.settings:
+      ret += ' --settings ' + os.path.abspath(self.settings.name)
+    if self.port:
+      ret += ' -p ' + self.port
+    if self.switches:
+      for s in self.switches:
+        if s['value'] is not None:
+          ret += ' -s "%s"=%s' % (s['name'], int(s['value']))
+    return ret
 
 
 class Cli(argparse.ArgumentParser):
   def __init__(self, *args, **kwargs):
     super(Cli, self).__init__(*args, **kwargs)
-    self._add_arguments()
+    self._add_args()
 
-  def _add_arguments(self):
+  def _add_args(self):
     self.add_argument('start', nargs='?', help='starts the server')
-    self.add_argument('--settings', default=SETTINGS_FILE, help='specify settings file location')  # http://stackoverflow.com/questions/7625786/type-dict-in-argparse-add-argument
+    self.add_argument('-d', '--debug', dest='debug', action='store_true', help='run in debug mode')
+    self.add_argument('--settings', type=argparse.FileType('r'), help='specify settings file location')  # http://stackoverflow.com/questions/7625786/type-dict-in-argparse-add-argument
+    self.add_argument('-p', '--port', help='specify HTTP server port (other than the one provided in the settings file)')
     self.add_argument('-s', '--switch', nargs='?', help='set switch using "name=value"', action='append')
 
-  @property
-  def switches(self):
-      return self.switches
-  @switches.setter
-  def switches(self, value):
-      self.switches = value
-  
+  def parse_args(self, command=None, *args, **kwargs):
+    namespace = CliNamespace()
+    if command:
+      args = super(Cli, self).parse_args(shlex.split(command)[1:], namespace=namespace)
+    else:
+      args = super(Cli, self).parse_args(namespace=namespace, *args, **kwargs)
+    
+    # Split out "name=0" into {'name': 0}
+    print 'bout to parse', args
+    args.switches = CliNamespace.parse_switches(command_array=args.switch)
+    return args
 
-  def get_switches_for_command(self, args=None, command=None):
-    if args is None:
-      args = self.parse_command(command)
-    args = vars(args)
-
-    data = self._switches.serialize();
-    for s in data:
-      s['value'] = None if args[s['name']] is None else (0 if args[s['name']].lower() == 't' else 1)
-    return data
+  def serialize_args(self):
+    ret = ''
+    ret += CliNamespace.serialize_switches(switch_array=self.switches)
+    return ret

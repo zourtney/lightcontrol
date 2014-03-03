@@ -18,29 +18,23 @@ class Switch(OutputPin):
     }
 
 
-
 class Switches(object):
   """Manager object for a collection of switches"""
-  def __init__(self, settings_file=None):
+  def __init__(self, settings=None):
     self._header = Header()
-    self._settings_filename = settings_file
+    self._settings = settings
+    self._switches = {}
     self._load()
     self.save()
 
   def _load(self):
-    with open(self._settings_filename, 'r') as infile:
-      opts = json.load(infile)
-      self._switches = {}
-      for s in opts['switches']:
-        initial = s['initial'] if 'initial' in s and s['initial'] is not None else s['value']
-        self._switches[s['name']] = Switch(s['name'], s['pin'], value=initial, initial=s['initial'])
+    for s in self._settings['switches']:
+      initial = s['initial'] if 'initial' in s and s['initial'] is not None else s['value']
+      self._switches[s['name']] = Switch(s['name'], s['pin'], value=initial, initial=s['initial'])
 
   def save(self):
-    with open(self._settings_filename, 'w') as outfile:
-      obj = {
-        'switches': self.serialize()
-      }
-      json.dump(obj, outfile, indent=4)
+    self._settings['switches'] = self.serialize()
+    self._settings.save();
 
   def serialize(self):
     return [v.serialize() for k, v in self._switches.iteritems()]
