@@ -8,29 +8,30 @@ class CliNamespace(argparse.Namespace):
   def __init__(self, *args, **kwargs):
     super(CliNamespace, self).__init__(*args, **kwargs)
 
-  @staticmethod
-  def parse_switches(command_array=None):
-    ret = {}
-    for s in command_array:
-      params = s.split('=')
-      if len(params) == 2:
-        ret[params[0]] = int(params[1])
-    return ret
-
   def serialize(self):
     ret = ''
-    if self.start:
+    if hasattr(self, 'start'):
       ret += ' start'
-    if self.debug:
+    if hasattr(self, 'debug') and self.debug:
       ret += ' -d'
-    if self.settings:
+    if hasattr(self, 'settings') and self.settings is not None:
       ret += ' --settings ' + os.path.abspath(self.settings.name)
-    if self.port:
+    if hasattr(self, 'port') and self.port is not None:
       ret += ' -p ' + self.port
-    if self.switches:
+    if hasattr(self, 'switches') and self.switches is not None:
       for s in self.switches:
         if s['value'] is not None:
           ret += ' -s "%s"=%s' % (s['name'], int(s['value']))
+    return ret
+
+  @staticmethod
+  def parse_switches(command_array=None):
+    ret = {}
+    if command_array is not None:
+      for s in command_array:
+        params = s.split('=')
+        if len(params) == 2:
+          ret[params[0]] = int(params[1])
     return ret
 
 
@@ -54,7 +55,6 @@ class Cli(argparse.ArgumentParser):
       args = super(Cli, self).parse_args(namespace=namespace, *args, **kwargs)
     
     # Split out "name=0" into {'name': 0}
-    print 'bout to parse', args
     args.switches = CliNamespace.parse_switches(command_array=args.switch)
     return args
 

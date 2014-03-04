@@ -32,14 +32,12 @@ class Scheduler(object):
     return self._jobs
 
   def _parse_switches(self, command=None):
+    """Merge command line representation of switch values with all switches"""
     args = Cli().parse_args(command=command)
     ret = copy.deepcopy(self._settings['switches'])
     for s in ret:
       s['value'] = args.switches[s['name']] if s['name'] in args.switches else None
     return ret
-
-  def _generate_switches(self, switches):
-    return CliNamespace.switches_to_command(switches)
 
   def save(self):
     # Remove old lightcontrol cron jobs
