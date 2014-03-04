@@ -1,5 +1,5 @@
-Light Control Server 2.0
-========================
+LightControl 2.0
+================
 
 This application provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
 
@@ -11,13 +11,13 @@ Initial Setup
 
 **Source**
 
-First, get the source code from Bitbucket. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and [making it easier](https://bitbucket.org/zourtney/lightcontrol/issue/1/medium-make-easily-installable) is the list).
+First, get the source code from GitHub. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and [making it easier](https://bitbucket.org/zourtney/lightcontrol/issue/1/medium-make-easily-installable) is the list).
 
-    git clone https://bitbucket.org/zourtney/lightcontrol.git
+    git clone https://github.com/zourtney/lightcontrol.git
     cd lightcontrol
     git submodule update --init --recursive
 
-Alternatively, you can get a zip file from the Downloads section on Bitbucket. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
+Alternatively, you can get a zip file from the Downloads section on GitHub. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
 
 **3rd Party Dependencies**
 
@@ -98,7 +98,7 @@ To start the HTTP server, run `server.py` from the command line. You will need t
 
 **Installing as a Service**
 
-You can make the Light Control Server behave like a Unix service by dropping *service/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as Light Control Server's directory. Change this line if you installed the application elsewhere.
+You can make LightControl behave like a Unix service by dropping *service/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as LightControl's directory. Change this line if you installed the application elsewhere.
 
     sudo cp service/lightcontrol.sh /etc/init.d
     sudo chmod 755 /etc/init.d/lightcontrol.sh
