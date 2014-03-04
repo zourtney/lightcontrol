@@ -2,20 +2,12 @@
 
 import os
 import sys
+import requests
 import json
 from server import LightControl
 from lightcontrol import Switches, Cli, Settings
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-
-
-def print_message(msg, overwrite=False):
-  if overwrite:
-    sys.stdout.write('\r%s\n' % msg)
-    sys.stdout.flush()
-  else:
-    sys.stdout.write('%s' % msg)
-    sys.stdout.flush()
 
 
 def main(argv):
@@ -35,24 +27,24 @@ def main(argv):
     settings['debug'] = True
   
   if args.start:
+    # Start server
     print 'Starting server on http://0.0.0.0:%s [debug=%s]' % (settings['port'], settings['debug'])
     app = LightControl(settings=settings)
-    app.start()   # <-- this is a blocking call. TODO: figure out how to set switches in BOTH situations.
-  
-  if args.switch:
-    print args.switches
-
-
-  #s = dict(arg.split('=') for arg in args.switch)  # NOTE: can't have '=' in name or value!
-  #print s
-  #url = args.destination or 'http://localhost:5000/api/switches/'
-
-  # Update switch data based on arguments, then PUT to server
-  # data = parser.get_switches_for_command(args=args)
-  # print_message('Setting switches...')
-  # r = requests.put(url, json.dumps(data))
-  # data = r.json()
-  # print_message('Setting switches...success!', overwrite=True)
+    app.start()
+    #TODO: set switches also? `app.start` is a blocking call :-(
+  elif args.switch:
+    # Set switches via HTTP (avoiding GPIO conflicts, making server "point of contact")
+    url = 'http://0.0.0.0:%s/api/switches/' % settings['port']
+    
+    # Convert to [{'name': 'switch name', 'value': 0}, ...]
+    print 'Setting switches', args.switches.keys()
+    switches = [{'name': k, 'value': v} for k, v in args.switches.iteritems()]
+    r = requests.put(url, json.dumps(switches))
+    
+    if r.status_code == 200:
+      print 'Success!'
+    else:
+      print 'Error %s, %s' % (r.status_code, r.text)
 
 
 if __name__ == '__main__':
