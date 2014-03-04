@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+from server import LightControl
 from lightcontrol import Switches, Cli, Settings
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -34,8 +35,9 @@ def main(argv):
     settings['debug'] = True
   
   if args.start:
-    # Start server
     print 'Starting server on http://0.0.0.0:%s [debug=%s]' % (settings['port'], settings['debug'])
+    app = LightControl(settings=settings)
+    app.start()   # <-- this is a blocking call. TODO: figure out how to set switches in BOTH situations.
   
   if args.switch:
     print args.switches

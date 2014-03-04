@@ -1,5 +1,5 @@
 {
-  "debug": false, 
+  "debug": true, 
   "zones": [], 
   "port": 5000, 
   "switches": [
