@@ -1,6 +1,12 @@
 Light Control Server
 ====================
 
+--------
+
+**NOTE:** *all the fun stuff is happening on the [dev](https://github.com/zourtney/lightcontrol/tree/dev) and [multinode](https://github.com/zourtney/lightcontrol/tree/multinode) branches. Check it out!*
+
+--------
+
 This application provides a simple RESTful API for manipulating a Raspberry Pi's GPIO pins over HTTP. The two major features are:
 
  - Direct on/off GPIO pin manipulation
