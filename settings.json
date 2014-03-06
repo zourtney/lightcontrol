@@ -1,28 +1,31 @@
 {
-    "switches": [
-        {
-            "value": 1, 
-            "initial": null, 
-            "name": "Unused", 
-            "pin": 12
-        }, 
-        {
-            "value": 0, 
-            "initial": null, 
-            "name": "Lamp", 
-            "pin": 13
-        }, 
-        {
-            "value": 0, 
-            "initial": null, 
-            "name": "Fish tank filter", 
-            "pin": 15
-        }, 
-        {
-            "value": 1, 
-            "initial": null, 
-            "name": "Fish tank light", 
-            "pin": 11
-        }
-    ]
+  "debug": true, 
+  "zones": [], 
+  "port": 5000, 
+  "switches": [
+    {
+      "value": 0, 
+      "initial": null, 
+      "name": "Unused", 
+      "pin": 12
+    }, 
+    {
+      "value": 0, 
+      "initial": null, 
+      "name": "Lamp", 
+      "pin": 13
+    }, 
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fish tank filter", 
+      "pin": 15
+    }, 
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fish tank light", 
+      "pin": 11
+    }
+  ]
 }
