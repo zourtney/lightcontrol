@@ -13,7 +13,7 @@ Initial Setup
 
 **Source**
 
-First, get the source code from GitHub. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and [making it easier](https://bitbucket.org/zourtney/lightcontrol/issue/1/medium-make-easily-installable) is the list).
+First, get the source code from GitHub. The easiest way to do this is to do a `git clone` of the lightcontrol repo (don't worry, it's not that bad -- and [making it easier](https://github.com/zourtney/lightcontrol/issues/1) is on the list).
 
     git clone https://github.com/zourtney/lightcontrol.git
     cd lightcontrol
