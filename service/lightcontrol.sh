@@ -14,6 +14,7 @@
 DIR=/home/pi/Development/lightcontrol
 DAEMON=$DIR/lightcontrol.py
 DAEMON_NAME=lightcontrol
+DAEMON_OPTS="start"
  
 # This next line determines what user the script runs as.
 # Root generally not recommended but necessary if you are using the Raspberry Pi GPIO from Python.
@@ -26,7 +27,7 @@ PIDFILE=/var/run/$DAEMON_NAME.pid
  
 do_start () {
     log_daemon_msg "Starting system $DAEMON_NAME daemon"
-    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile $PIDFILE --user $DAEMON_USER --startas $DAEMON
+    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile $PIDFILE --user $DAEMON_USER --startas $DAEMON -- $DAEMON_OPTS
     log_end_msg $?
 }
 do_stop () {
