@@ -13,7 +13,6 @@ class LightControl(object):
   def __init__(self, root_path=None):
     self._root_path = root_path
     self._init_settings()
-    self._init_http_server()
 
   def _init_settings(self):
     args = Cli().parse_args()
@@ -36,6 +35,10 @@ class LightControl(object):
 
     self._args = args
     self._settings = settings
+
+  def start(self):
+    self._init_http_server()
+    self._server.run(host='0.0.0.0', port=self._settings['port'])
 
   def _init_http_server(self):
     webapp_dir = '%s/%s' % (self._root_path, WEBAPP_DIR)
@@ -61,9 +64,6 @@ class LightControl(object):
 
   def _show_webapp_index(self):
     return render_template('index.html')
-
-  def start(self):
-    self._server.run(host='0.0.0.0', port=self._settings['port'])
 
   def set_switches(self):
     url = 'http://0.0.0.0:%s/api/switches/' % self._settings['port']
