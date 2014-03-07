@@ -8,11 +8,12 @@ ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 def main():
   app = LightControl(root_path=ROOT_PATH)
+  args = app.args
 
-  if app.args.start.lower() == 'start':
+  if args.start is not None and args.start.lower() == 'start':
     print 'Starting server on http://0.0.0.0:%s [debug=%s]' % (app.settings['port'], app.settings['debug'])
     app.start()
-  elif app.args.switch:
+  elif args.switch:
     try:
       r = app.set_switches()
       if r.status_code == 200:
