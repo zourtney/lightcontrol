@@ -5,7 +5,7 @@ zones_routes = Blueprint('zones_routes', __name__, url_prefix='/api')
 
 def make_zones_routes(zones):
   """
-  A fairly ugly, primative, and verbose approach to routing requests to zone
+  A fairly ugly, primitive, and verbose approach to routing requests to zone
   URLs to their respective host. It works though.
 
   This also creates the URL definition for `/api/zones/`, which I guess is
