@@ -2,12 +2,8 @@
   "debug": true, 
   "zones": [
     {
-      "name": "Entry room", 
-      "address": "http://10.0.1.7:5000"
-    }, 
-    {
-      "name": "Living room", 
-      "address": "10.0.1.24"
+      "name": "self", 
+      "address": "http://10.0.1.3:5001"
     }
   ], 
   "port": 5000, 

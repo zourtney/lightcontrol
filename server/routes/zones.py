@@ -1,9 +1,16 @@
 from flask import Blueprint
-from .helpers import jsonify_array, proxy_get, proxy_put
+from .helpers import jsonify_array, proxy_request
 
 zones_routes = Blueprint('zones_routes', __name__, url_prefix='/api')
 
 def make_zones_routes(zones):
+  """
+  A fairly ugly, primative, and verbose approach to routing requests to zone
+  URLs to their respective host. It works though.
+
+  This also creates the URL definition for `/api/zones/`, which I guess is
+  important too.
+  """
   # Helper method
   def get_zone(zone_name):
     return next((z for z in zones if z['name'] == zone_name), None)
@@ -17,46 +24,54 @@ def make_zones_routes(zones):
   @zones_routes.route('/zones/<zone_name>/version', methods=['GET'])
   def proxy_get_version(zone_name):
     zone = get_zone(zone_name)   #TODO: return 404 for null zone
-    return proxy_get(url=zone['address'] + '/api/version')
+    return proxy_request(method='get', url=zone['address'] + '/api/version')
 
   # Proxy switches / outlets
   @zones_routes.route('/zones/<zone_name>/switches/', methods=['GET'])
   def proxy_get_switches(zone_name):
     zone = get_zone(zone_name)   #TODO: return 404 for null zone
-    return proxy_get(url=zone['address'] + '/api/switches/',
-                     fallback_url=zone['address'] + '/outlets/')  # legacy
+    return proxy_request(method='get', url=zone['address'] + '/api/switches/')
 
   @zones_routes.route('/zones/<zone_name>/switches/', methods=['PUT'])
-  def proxy_put_switches(zone_name):
+  def proxy_update_switches(zone_name):
     zone = get_zone(zone_name)   #TODO: return 404 for null zone
-    return proxy_put(url=zone['address'] + '/api/switches/',
-                     fallback_url=zone['address'] + '/outlets/')  # legacy
+    return proxy_request(method='put', url=zone['address'] + '/api/switches/')
 
   @zones_routes.route('/zones/<zone_name>/switches/<switch_name>', methods=['GET'])
   def proxy_get_switch(zone_name, switch_name):
     zone = get_zone(zone_name)   #TODO: return 404 for null zone
-    return proxy_get(url=zone['address'] + '/api/switches/' + switch_name,
-                     fallback_url=zone['address'] + '/outlets/' + switch_name + '/')  # legacy
+    return proxy_request(method='get', url=zone['address'] + '/api/switches/' + switch_name)
 
   @zones_routes.route('/zones/<zone_name>/switches/<switch_name>', methods=['PUT'])
-  def proxy_put_switch(zone_name, switch_name):
+  def proxy_update_switch(zone_name, switch_name):
     zone = get_zone(zone_name)   #TODO: return 404 for null zone
-    return proxy_put(url=zone['address'] + '/api/switches/' + switch_name,
-                     fallback_url=zone['address'] + '/outlets/' + switch_name + '/')  # legacy
+    return proxy_request(method='put', url=zone['address'] + '/api/switches/' + switch_name)
 
   # Proxy schedules
   @zones_routes.route('/zones/<zone_name>/schedules/', methods=['GET'])
   def proxy_get_schedules(zone_name):
     zone = get_zone(zone_name)
-    r = proxy_get(url=zone['address'] + '/api/schedules/')
-    
-    if r.status_code == 404:
-      print 'trying legacy mode...'
-      r = proxy_get(url=zone['address'] + '/schedules/')
-      r.data.switches = r.data.outlets
-      print r.data
+    return proxy_request(method='get', url=zone['address'] + '/api/schedules/')
 
-    return r
+  @zones_routes.route('/zones/<zone_name>/schedules/', methods=['POST'])
+  def proxy_create_schedule(zone_name):
+    zone = get_zone(zone_name)
+    return proxy_request(method='post', url=zone['address'] + '/api/schedules/')
+
+  @zones_routes.route('/zones/<zone_name>/schedules/<schedule_name>', methods=['GET'])
+  def proxy_get_schedule(zone_name, schedule_name):
+    zone = get_zone(zone_name)
+    return proxy_request(method='get', url=zone['address'] + '/api/schedules/' + schedule_name)
+
+  @zones_routes.route('/zones/<zone_name>/schedules/<schedule_name>', methods=['PUT'])
+  def proxy_update_schedule(zone_name, schedule_name):
+    zone = get_zone(zone_name)
+    return proxy_request(method='put', url=zone['address'] + '/api/schedules/' + schedule_name)
+
+  @zones_routes.route('/zones/<zone_name>/schedules/<schedule_name>', methods=['DELETE'])
+  def proxy_delete_schedule(zone_name, schedule_name):
+    zone = get_zone(zone_name)
+    return proxy_request(method='delete', url=zone['address'] + '/api/schedules/' + schedule_name)
 
   return zones_routes
 

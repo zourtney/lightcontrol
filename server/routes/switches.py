@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, request
-from .helpers import jsonify_array, proxy_get
+from .helpers import jsonify_array
 
 switches_routes = Blueprint('switches_routes', __name__, url_prefix='/api')
 

@@ -1,0 +1,31 @@
+{
+  "debug": true, 
+  "zones": [], 
+  "port": 5001, 
+  "switches": [
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fake 4", 
+      "pin": 11
+    }, 
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fake 1", 
+      "pin": 12
+    }, 
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fake 3", 
+      "pin": 15
+    }, 
+    {
+      "value": 1, 
+      "initial": null, 
+      "name": "Fake 2", 
+      "pin": 13
+    }
+  ]
+}
