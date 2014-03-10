@@ -51,17 +51,17 @@ def init_schedules_routes(scheduler):
   return schedules_routes
 
 
-def add_zone_schedules(blueprint=None, url_prefix='/', dest_url=None):
+def add_zone_schedules(blueprint=None, url_prefix=None, dest_url=None):
   """
-  Register schedule routes on an existing blueprint for an existing zone.
+  Register schedule routes on an existing blueprint for a zone.
 
   For example:
       [GET] /api/zones/Living%20Room/schedules/
   """
   @blueprint.route(url_prefix + '/schedules/', methods=['GET'])
-  def get_schedule():
-    return proxy_get(url=dest_url + '/api/schedules',
-                     fallback_url=dest_url + '/schedules')  # legacy
+  def get_schedules():
+    return proxy_get(url=dest_url + '/api/schedules/',
+                     fallback_url=dest_url + '/schedules/')  # legacy
 
   @blueprint.route(url_prefix + '/schedules/<name>', methods=['GET'])
   def get_one_schedule(name):

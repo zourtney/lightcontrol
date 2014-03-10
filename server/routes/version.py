@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from .helpers import proxy_get
 
 version_routes = Blueprint('version_routes', __name__, url_prefix='/api')
 

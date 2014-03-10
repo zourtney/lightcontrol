@@ -1,10 +1,16 @@
 import json
 from flask import Blueprint, jsonify, request
-from .helpers import jsonify_array
+from .helpers import jsonify_array, proxy_get
 
 switches_routes = Blueprint('switches_routes', __name__, url_prefix='/api')
 
 def init_switches_routes(switches):
+  """
+  Create a new blueprint for locally-controlled switches
+
+  For example:
+      [GET] /api/switches/
+  """
   @switches_routes.route('/switches/', methods=['GET'])
   def get_all():
     return jsonify_array(switches.serialize())
