@@ -63,6 +63,7 @@ Where:
 - `initial`: state to set the pin on server startup. `0` for on, `1` for off, `null` for no change.
 
 **NOTE 1:** the name may not contain an eqauls (`=`) sign.
+
 **NOTE 2:** `0` is "on" and `1` is "off" because of that's how the 5v AC-controlling relays I've used work. If you're controlling DC, this will likely be "backwards." If this bothers you, complain in [Issues](https://github.com/zourtney/lightcontrol/issues).
 
 REST API
@@ -113,7 +114,7 @@ To start the HTTP server, run `server.py` from the command line. You will need t
 
 You can make LightControl behave like a Unix service by dropping *service/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as LightControl's directory. Change this line if you installed the application elsewhere.
 
-    sudo cp service/lightcontrol.sh /etc/init.d
+    sudo cp service/lightcontrol.sh /etc/init.d/
     sudo chmod 755 /etc/init.d/lightcontrol.sh
 
 Now you `start` and `stop` it at any time.
@@ -127,6 +128,10 @@ You'll probably want the server to run as soon as the Raspberry Pi boots up. To 
     sudo update-rc.d lightcontrol.sh defaults
 
 For more details, check out [this link](http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-start-up.html).
+
+Schedules
+---------
+TODO: explain schedules. Use screenshot from the bundled webapp.
 
 Clients
 -------
