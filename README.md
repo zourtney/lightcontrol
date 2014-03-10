@@ -106,9 +106,9 @@ Data will be formatted like the following:
 Running the Server
 ------------------
 
-To start the HTTP server, run `server.py` from the command line. You will need to run as `sudo` to get access to the Raspberry Pi's GPIO pins.
+To start the HTTP server, run `lightcontrol.py` from the command line with the `start` argument. You will need to run as `sudo` to get access to the Raspberry Pi's GPIO pins.
 
-    sudo ./server.py
+    sudo ./lightcontrol.py start
 
 **Installing as a Service**
 
@@ -142,9 +142,9 @@ A full-featured AngularJS webapp is available at the server root, [http://localh
 
 **Command line interface**
 
-A command line interface is available by running *cli.py*. In short, just define your switch name as an argument and *t* or *f* for turning the switch on or off (respectively).
+A command line interface is available by running *lightcontrol.py* with the `-s` argument. Example:
 
-    sudo ./cli.py -"Desk lamp" t
+    sudo ./lightcontrol.py -s "Desk lamp"=0
 
 **Mobile**
 
