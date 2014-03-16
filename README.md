@@ -18,7 +18,6 @@ First, get the source code from GitHub. The easiest way to do this is to do a `g
     git clone https://github.com/zourtney/lightcontrol.git
     cd lightcontrol
     git fetch && git checkout dev
-    git submodule update --init --recursive
 
 Alternatively, you can get a zip file from the Downloads section on GitHub. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
 
