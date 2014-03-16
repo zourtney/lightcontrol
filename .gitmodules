@@ -1,3 +1,0 @@
-[submodule "server/persistence/gpiocrust"]
-	path = server/persistence/gpiocrust
-	url = https://github.com/zourtney/gpiocrust.git
