@@ -17,7 +17,7 @@ First, get the source code from GitHub. The easiest way to do this is to do a `g
 
     git clone https://github.com/zourtney/lightcontrol.git
     cd lightcontrol
-    git fetch && git checkout multinode
+    git fetch && git checkout dev
     git submodule update --init --recursive
 
 Alternatively, you can get a zip file from the Downloads section on GitHub. However, you will need to manually install the [gpiocrust](https://github.com/zourtney/gpiocrust) dependency.
@@ -112,9 +112,9 @@ To start the HTTP server, run `lightcontrol.py` from the command line with the `
 
 **Installing as a Service**
 
-You can make LightControl behave like a Unix service by dropping *service/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as LightControl's directory. Change this line if you installed the application elsewhere.
+You can make LightControl behave like a Unix service by dropping *init.d/lightcontrol.sh* into your */etc/init.d* directory. Currently, line 14 of the script defines `/home/pi/Development/lightcontrol` as LightControl's directory. Change this line if you installed the application elsewhere.
 
-    sudo cp service/lightcontrol.sh /etc/init.d/
+    sudo cp init.d/lightcontrol.sh /etc/init.d/
     sudo chmod 755 /etc/init.d/lightcontrol.sh
 
 Now you `start` and `stop` it at any time.

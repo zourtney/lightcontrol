@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from server import LightControl
+from lightcontrol import LightControl
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 

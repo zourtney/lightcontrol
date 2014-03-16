@@ -1,0 +1,7 @@
+recursive-include lightcontrol *.py
+include init.d/*.*
+recursive-include webapp *.*
+include LICENSE
+include lightcontrol.py
+include README.md
+include settings.json

@@ -7,5 +7,5 @@ setup(name='lightcontrol',
       author='zourtney',
       author_email='zourtney@gmail.com',
       url='https://github.com/zourtney/lightcontrol',
-      install_requires: ['gpiocrust']
+      install_requires=['gpiocrust']
      )
