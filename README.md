@@ -29,7 +29,7 @@ LightControl has dependencies on a few 3rd party libraries. You can easily insta
 
 Then install the dependencies:
 
-    sudo pip install flask requests croniter python-crontab
+    sudo pip install flask requests croniter python-crontab gpiocrust
 
 **Troubleshooting**
 
