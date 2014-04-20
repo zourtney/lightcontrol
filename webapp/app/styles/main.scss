@@ -4,26 +4,22 @@ $fa-font-path: "/bower_components/font-awesome/fonts/";
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 @import 'sass-bootstrap/lib/bootstrap';
 
-.header {
-  .title {
-    margin: 20px 0 40px 0;
-    padding-top: 6px;
-    display: block;
-    text-decoration: none;
-    cursor: pointer;
+html, body {
+  height: 100%;
+}
 
-    i {
-      font-size: 24px;
-      margin-right: 8px;
-      color: $gray-light;
-    }
-    
-    h3 {
-      display: inline;
-    }
+nav {
+  &.navbar {
+    border-radius: 0;
+  }
+
+  .about-link {
+    font-size: 24px;
+    margin: 10px 0;
   }
 }
 
 @import 'about';
 @import 'schedules';
 @import 'switches';
+@import 'zones';

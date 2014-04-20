@@ -1,0 +1,39 @@
+@import 'sass-bootstrap/lib/bootstrap';
+
+.zone-banner {
+  font-size: 128px;
+  font-style: italic;
+  opacity: 0.1;
+}
+
+.zone-select {
+  display: inline-block;
+}
+
+.zone-list {
+  margin-top: 100px;
+  text-align: center;
+
+  li {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+  }
+
+  .zone-link {
+    display: block;
+    width: 200px;
+    height: 200px;
+    border: 1px solid $gray;
+    @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+    text-decoration: none;
+
+    i {
+      margin-top: 60px;
+      font-size: 48px;
+    }
+    .name {
+      display: block;
+      font-size: 24px;
+    }
+  }
+}

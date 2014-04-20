@@ -1,5 +1,4 @@
-/*global _ */
-'use strict';
+/*'use strict';
 
 var webAppModule = angular.module('webappApp');
 
@@ -148,4 +147,4 @@ webAppModule.controller('SchedulesCtrl', ['$scope', 'Switches', 'Schedules', 'Sc
       });
     };
   }
-]);
+]);*/

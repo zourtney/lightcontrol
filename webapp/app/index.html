@@ -24,8 +24,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div ng-view></div>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -43,17 +42,26 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/momentjs/moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/services/switches.js"></script>
-        <script src="scripts/services/schedules.js"></script>
+        
         <script src="scripts/services/about.js"></script>
-        <script src="scripts/controllers/switches.js"></script>
-        <script src="scripts/controllers/schedules.js"></script>
+        <script src="scripts/services/schedules.js"></script>
+        <script src="scripts/services/switches.js"></script>
+        <script src="scripts/services/zones.js"></script>
+        
+        <script src="scripts/controllers/home.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        
+        <script src="scripts/directives/schedule_list.js"></script>
+        <script src="scripts/directives/switch_list.js"></script>
+        <script src="scripts/directives/zone_select.js"></script>
+        <script src="scripts/directives/zone_banner.js"></script>
         <!-- endbuild -->
 </body>
 </html>

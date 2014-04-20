@@ -1,6 +1,22 @@
 'use strict';
 
-var schedulesServices = angular.module('schedulesServices', ['ngResource']);
+angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http, $q) {
+  return {
+    query: function(zone) {
+      var deferred = $q.defer(),
+          url = zone.isLocal ? '/api/schedules/' : '/api/zones/' + zone.name + '/schedules/';
+
+      $http.get(url)
+        .success(function(data) {
+          deferred.resolve(data);
+        });
+
+      return deferred.promise;
+    }
+  };
+}]);
+
+/*var schedulesServices = angular.module('schedulesServices', ['ngResource']);
 
 
 schedulesServices.factory('Schedules', ['$resource',
@@ -20,4 +36,4 @@ schedulesServices.factory('Schedule', ['$resource', '$http', function($resource,
     }
   });
   return Schedule;
-}]);
+}]);*/

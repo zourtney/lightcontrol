@@ -1,8 +1,9 @@
-'use strict';
+/*'use strict';
 
 angular.module('webappApp')
   .controller('SwitchesCtrl', ['$scope', 'Switches', 'Switch',
     function($scope, Switches, Switch) {
+      console.log('yoyoyoyoy');
       // Load switches into array at startup
       $scope.switches = Switches.query();
       
@@ -39,4 +40,4 @@ angular.module('webappApp')
         setAllSwitches(1);
       };
     }
-  ]);
+  ]);*/

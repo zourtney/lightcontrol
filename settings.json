@@ -2,14 +2,14 @@
   "debug": true, 
   "zones": [
     {
-      "name": "self", 
-      "address": "http://10.0.1.3:5001"
+      "name": "Living room", 
+      "address": "http://10.0.1.24:5000"
     }
   ], 
   "port": 5000, 
   "switches": [
     {
-      "value": 0, 
+      "value": 1, 
       "initial": null, 
       "name": "Unused", 
       "pin": 12
@@ -21,13 +21,13 @@
       "pin": 13
     }, 
     {
-      "value": 1, 
+      "value": 0, 
       "initial": null, 
       "name": "Fish tank filter", 
       "pin": 15
     }, 
     {
-      "value": 0, 
+      "value": 1, 
       "initial": null, 
       "name": "Fish tank light", 
       "pin": 11

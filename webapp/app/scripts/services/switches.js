@@ -1,10 +1,23 @@
-/*global _ */
 'use strict';
 
-var switchesServices = angular.module('switchesServices', ['ngResource']);
+angular.module('webappApp').factory('Switches', ['$http', '$q', function($http, $q) {
+  return {
+    query: function(zone) {
+      var deferred = $q.defer(),
+          url = zone.isLocal ? '/api/switches/' : '/api/zones/' + zone.name + '/switches/';
+
+      $http.get(url)
+        .success(function(data) {
+          deferred.resolve(data);
+        });
+
+      return deferred.promise;
+    }
+  };
+}]);
 
 
-switchesServices.factory('Switches', ['$resource', '$http',
+/*switchesServices.factory('Switches', ['$resource', '$http',
   function($resource, $http) {
     var Switches = $resource('/api/switches/');
     angular.extend(Switches.prototype, {
@@ -21,4 +34,4 @@ switchesServices.factory('Switch', ['$resource', function($resource) {
   return $resource('/api/switches/:name', {name: '@name'}, {
     update: { method: 'PUT' }
   });
-}]);
+}]);*/
