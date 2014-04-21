@@ -1,9 +1,6 @@
 'use strict';
 
-var aboutServices = angular.module('aboutServices', ['ngResource']);
-
-
-aboutServices.factory('Version', ['$resource',
+angular.module('webappApp').factory('Version', ['$resource',
   function($resource) {
     return $resource('/api/version');
   }

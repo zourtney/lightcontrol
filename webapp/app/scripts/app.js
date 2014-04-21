@@ -5,21 +5,12 @@ angular.module('webappApp', [
   'ngCookies',
   'ngSanitize',
   'ngRoute',
-  'ui.bootstrap',
-  
-  'aboutServices'
-  // 'schedulesServices',
-  // 'switchesServices',
-  // 'zonesServices'
+  'ui.bootstrap'
 ]).config(function ($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'views/home.html',
       controller: 'HomeCtrl'
-    })
-    .when('/about', {
-      templateUrl: 'views/about.html',
-      controller: 'AboutCtrl'
     })
     .otherwise({
       redirectTo: '/'

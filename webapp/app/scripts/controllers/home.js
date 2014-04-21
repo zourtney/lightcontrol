@@ -71,5 +71,16 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
         }
       });
     };
+
+
+    //
+    // About
+    //
+    $scope.showAbout = function() {
+      $modal.open({
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl'
+      });
+    };
   }
 ]);
