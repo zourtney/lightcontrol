@@ -33,6 +33,17 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
         });
 
       return deferred.promise;
+    },
+    addOne: function(schedule) {
+      var deferred = $q.defer(),
+          url = '/api/schedules/';
+
+      $http.post(url, schedule)
+        .success(function(data) {
+          deferred.resolve(updateSchedule(schedule, data));
+        });
+
+      return deferred.promise;
     }
   };
 }]);

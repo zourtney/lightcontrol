@@ -1,8 +1,11 @@
+/*global _ */
 'use strict';
 
 angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches', 'Schedules', '$modal',
   function($scope, Zones, Switches, Schedules, $modal) {
+    //
     // Zones
+    //
     Zones.query().then(function(data) {
       $scope.zones = data;
       $scope.currentZone = $scope.zones[0];
@@ -16,7 +19,9 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
     });
 
 
+    //
     // Switches
+    //
     function getSwitches() {
       Switches.query($scope.currentZone).then(function(data) {
         $scope.switches = data;
@@ -32,12 +37,45 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
     };
 
 
+    //
     // Schedules
+    //
     function getSchedules() {
       Schedules.query($scope.currentZone).then(function(data) {
         $scope.schedules = data;
       });
     }
+
+    $scope.addSchedule = function() {
+      var schedule, modalInstance;
+
+      // Create blank schedule, with switches preset to 'no change'.
+      schedule = {
+        switches: _.map($scope.switches, function(o) {
+          o.value = null;
+          return o;
+        })
+      };
+
+      // Create the modal
+      modalInstance = $modal.open({
+        templateUrl: 'views/schedule_edit.html',
+        controller: 'ScheduleEditCtrl',
+        resolve: {
+          schedule: function() {
+            return schedule;
+          }
+        }
+      });
+
+      // Add to `$scope.schedules` on successful save.
+      modalInstance.result.then(function(schedule) {
+        schedule.originalName = schedule.name;
+        Schedules.addOne(schedule).then(function(data) {
+          $scope.schedules.push(data);
+        });
+      });
+    };
 
     $scope.editSchedule = function(schedule) {
       var modalInstance = $modal.open({
