@@ -1,6 +1,6 @@
 <ul class="schedules list-unstyled">
   <li class="schedule" ng-repeat="schedule in schedules">
-    <div class="content" ng-click="open()">
+    <div class="content" ng-click="editSchedule(schedule)">
       <i class="fa fa-clock-o"></i>
       <div class="name">{{schedule.name}}</div>
       <div class="next">Next: {{schedule.next}}</div>

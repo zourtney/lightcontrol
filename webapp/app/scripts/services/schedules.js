@@ -1,6 +1,16 @@
 'use strict';
 
 angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http, $q) {
+  
+  function updateSchedule(schedule, data) {
+    angular.forEach(data, function(val, key) {
+      if (key && key[0] !== '$') {
+        schedule[key] = val;
+      }
+    });
+    return schedule;
+  }
+
   return {
     query: function(zone) {
       var deferred = $q.defer(),
@@ -9,6 +19,17 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
       $http.get(url)
         .success(function(data) {
           deferred.resolve(data);
+        });
+
+      return deferred.promise;
+    },
+    setOne: function(schedule) {
+      var deferred = $q.defer(),
+          url = '/api/schedules/' + schedule.originalName;
+
+      $http.put(url, schedule)
+        .success(function(data) {
+          deferred.resolve(updateSchedule(schedule, data));
         });
 
       return deferred.promise;

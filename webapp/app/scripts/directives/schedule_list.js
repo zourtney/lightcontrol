@@ -5,7 +5,8 @@ angular.module('webappApp').directive('lcScheduleList', function() {
     restrict: 'E',
     templateUrl: 'views/schedule_list.html',
     scope: {
-      schedules: '='
+      schedules: '=',
+      editSchedule: '='
     }
   };
 });

@@ -9,13 +9,13 @@
   "port": 5000, 
   "switches": [
     {
-      "value": 1, 
+      "value": 0, 
       "initial": null, 
       "name": "Unused", 
       "pin": 12
     }, 
     {
-      "value": 0, 
+      "value": 1, 
       "initial": null, 
       "name": "Lamp", 
       "pin": 13

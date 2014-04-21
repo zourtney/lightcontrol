@@ -1,4 +1,5 @@
-/*'use strict';
+/*global _ */
+'use strict';
 
 var webAppModule = angular.module('webappApp');
 
@@ -7,7 +8,7 @@ var webAppModule = angular.module('webappApp');
 //
 // Add / edit schedule modal controller
 //
-webAppModule.controller('ScheduleEditModalCtrl', ['$scope', '$modalInstance', 'schedule',
+webAppModule.controller('ScheduleEditCtrl', ['$scope', '$modalInstance', 'schedule',
   function($scope, $modalInstance, schedule) {
     $scope.originalName = schedule.name;
     $scope.schedule = schedule;
@@ -36,7 +37,7 @@ webAppModule.controller('ScheduleEditModalCtrl', ['$scope', '$modalInstance', 's
   }
 ]);
 
-
+/*
 //
 // Delete schedule modal controller
 //
