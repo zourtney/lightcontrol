@@ -1,6 +1,14 @@
 'use strict';
 
 angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http, $q) {
+
+  function copyArrayWithZone(schedules, zone) {
+    var ret = angular.copy(schedules);
+    angular.forEach(ret, function(s) {
+      s.zone = zone;
+    });
+    return ret;
+  }
   
   function updateSchedule(schedule, data) {
     angular.forEach(data, function(val, key) {
@@ -11,6 +19,10 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
     return schedule;
   }
 
+  function getUrlPrefix(zone) {
+    return zone.isLocal ? '/api/schedules' : '/api/zones/' + zone.name + '/schedules';
+  }
+
   return {
     query: function(zone) {
       var deferred = $q.defer(),
@@ -18,14 +30,14 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
 
       $http.get(url)
         .success(function(data) {
-          deferred.resolve(data);
+          deferred.resolve(copyArrayWithZone(data, zone));
         });
 
       return deferred.promise;
     },
     setOne: function(schedule) {
       var deferred = $q.defer(),
-          url = '/api/schedules/' + schedule.originalName;
+          url = getUrlPrefix(schedule.zone) + '/' + schedule.originalName;
 
       $http.put(url, schedule)
         .success(function(data) {
@@ -36,7 +48,7 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
     },
     addOne: function(schedule) {
       var deferred = $q.defer(),
-          url = '/api/schedules/';
+          url = getUrlPrefix(schedule.zone) + '/';
 
       $http.post(url, schedule)
         .success(function(data) {
@@ -47,7 +59,7 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
     },
     deleteOne: function(schedule) {
       var deferred = $q.defer(),
-          url = '/api/schedules/' + schedule.name;
+          url = getUrlPrefix(schedule.zone) + '/' + schedule.name;
 
       $http.delete(url, schedule)
         .success(function(data) {
@@ -58,25 +70,3 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
     }
   };
 }]);
-
-/*var schedulesServices = angular.module('schedulesServices', ['ngResource']);
-
-
-schedulesServices.factory('Schedules', ['$resource',
-  function($resource) {
-    return $resource('/api/schedules/');
-  }
-]);
-
-
-schedulesServices.factory('Schedule', ['$resource', '$http', function($resource, $http) {
-  var Schedule = $resource('/api/schedules/:originalName', {originalName: '@originalName'}, {
-    update: { method: 'PUT' }
-  });
-  angular.extend(Schedule.prototype, {
-    '$save': function() {
-      return $http.post('/api/schedules/', this);   // still annoying: http://stackoverflow.com/a/14536416/311207
-    }
-  });
-  return Schedule;
-}]);*/
