@@ -4,7 +4,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts/";
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 @import 'sass-bootstrap/lib/bootstrap';
 
-html, body {
+html, body, .main-view {
   height: 100%;
 }
 
@@ -20,6 +20,12 @@ nav {
       cursor: pointer;
     }
   }
+}
+
+.switch-list {
+  height: 100%;
+  width: 100%;
+  display: table;
 }
 
 @import 'about';
