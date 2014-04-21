@@ -46,7 +46,7 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
       });
     }
 
-    $scope.addSchedule = function() {
+    /*$scope.addSchedule = function() {
       var schedule, modalInstance;
 
       // Create blank schedule, with switches preset to 'no change'.
@@ -64,42 +64,36 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
         resolve: {
           schedule: function() {
             return schedule;
+          },
+          schedules: function() {
+            return $scope.schedules;
           }
         }
       });
-
-      // Add to `$scope.schedules` on successful save.
-      modalInstance.result.then(function(schedule) {
-        schedule.originalName = schedule.name;
-        Schedules.addOne(schedule).then(function(data) {
-          $scope.schedules.push(data);
-        });
-      });
-    };
+    };*/
 
     $scope.editSchedule = function(schedule) {
-      var modalInstance = $modal.open({
+      // Create blank schedule, with switches preset to 'no change'.
+      if (! schedule) {
+        schedule = {
+          switches: _.map($scope.switches, function(o) {
+            o.value = null;
+            return o;
+          })
+        };
+      }
+
+      $modal.open({
         templateUrl: 'views/schedule_edit.html',
         controller: 'ScheduleEditCtrl',
         resolve: {
           schedule: function() {
-            return angular.copy(schedule);
+            return schedule;
+          },
+          schedules: function() {
+            return $scope.schedules;
           }
         }
-      });
-
-      modalInstance.result.then(function(newSchedule) {
-        //NOTE: setting 'originalName' so we PUT to the same URL. Consider switiching to numeric ID system for UIDs.
-        newSchedule.originalName = schedule.name;
-
-        // Save to server, then copy back into `schedule`.
-        Schedules.setOne(newSchedule).then(function(updatedNewSchedule) {
-          angular.forEach(updatedNewSchedule, function(val, key) {
-            if (key && key[0] !== '$') {
-              schedule[key] = val;
-            }
-          });
-        });
       });
     };
   }

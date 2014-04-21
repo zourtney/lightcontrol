@@ -44,6 +44,17 @@ angular.module('webappApp').factory('Schedules', ['$http', '$q', function($http,
         });
 
       return deferred.promise;
+    },
+    deleteOne: function(schedule) {
+      var deferred = $q.defer(),
+          url = '/api/schedules/' + schedule.name;
+
+      $http.delete(url, schedule)
+        .success(function(data) {
+          deferred.resolve(updateSchedule(schedule, data));
+        });
+
+      return deferred.promise;
     }
   };
 }]);
