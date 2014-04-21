@@ -1,15 +1,13 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <!--<div class="navbar-header">-->
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand title" ng-href="/">
-      <i class="fa fa-power-off"></i> LightControl
-    </a>
-  <!--</div>-->
+  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="navbar-brand title" ng-href="/">
+    <i class="fa fa-power-off"></i> LightControl
+  </a>
 
   <lc-zone-select zones="zones" current-zone="currentZone" class="zone-select"></lc-zone-select>
 
@@ -20,7 +18,7 @@
 
 <div class="container">
   <!--<lc-zone-banner current-zone="currentZone"></lc-zone-banner>-->
-  <lc-switch-list switches="switches"></lc-switch-list>
+  <lc-switch-list switches="switches" toggle-switch="toggleSwitch" set-switches="setSwitches" />
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom">

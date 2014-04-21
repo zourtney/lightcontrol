@@ -1,7 +1,7 @@
 <div class="switches">
   <button type="button" ng-repeat="switch in switches"
     class="switch btn btn-lg" ng-class="switch.value === 0 ? 'btn-success' : ''"
-    ng-click="toggleSwitch()"
+    ng-click="toggleSwitch(switch)"
   >
     <i class="fa fa-power-off"></i>
     <span class="name">{{switch.name}}</span>
@@ -9,8 +9,8 @@
   </button>
 
   <div class="master">
-    <a href="" ng-click="turnAllSwitchesOn()">all on</a>
+    <a href="" ng-click="setSwitches(0)">all on</a>
     <span class="muted-text">|</span>
-    <a href="" ng-click="turnAllSwitchesOff()">all off</a>
+    <a href="" ng-click="setSwitches(1)">all off</a>
   </div>
 </div>

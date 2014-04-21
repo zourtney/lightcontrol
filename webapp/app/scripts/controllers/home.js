@@ -27,5 +27,13 @@ angular.module('webappApp').controller('HomeCtrl', ['$scope', 'Zones', 'Switches
         getSchedules();
       }
     });
+
+    $scope.toggleSwitch = function(swtch) {
+      Switches.setOne(swtch, swtch.value === 0 ? 1 : 0);
+    };
+
+    $scope.setSwitches = function(val) {
+      Switches.setAll($scope.switches, val);
+    };
   }
 ]);

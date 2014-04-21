@@ -5,22 +5,9 @@ angular.module('webappApp').directive('lcSwitchList', function() {
     restrict: 'E',
     templateUrl: 'views/switch_list.html',
     scope: {
-      switches: '='
-    },
-    link: function() {
-      // Save toggled switch state to server
-      /*scope.toggleSwitch = function() {
-        var self = this,
-            s;
-
-        s = new Switch(angular.extend({}, self.switch, {
-          value: self.switch.value === 0 ? 1 : 0
-        }));
-
-        s.$update().then(function() {
-          self.switch = s;
-        });
-      };*/
+      switches: '=',
+      toggleSwitch: '=',
+      setSwitches: '='
     }
   };
 });
