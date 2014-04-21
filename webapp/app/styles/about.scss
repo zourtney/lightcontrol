@@ -1,5 +1,18 @@
 @import 'sass-bootstrap/lib/bootstrap';
 
+.about-link {
+  font-size: 24px;
+  padding: 10px 20px;
+  margin: 0;
+  color: $gray-light;
+  cursor: pointer;
+  
+  &:hover {
+    background: $gray-dark;
+    color: $gray-lighter;
+  }
+}
+
 .about {
   text-align: center;
 

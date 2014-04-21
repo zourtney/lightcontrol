@@ -15,13 +15,13 @@
       "pin": 12
     }, 
     {
-      "value": 1, 
+      "value": 0, 
       "initial": null, 
       "name": "Lamp", 
       "pin": 13
     }, 
     {
-      "value": 1, 
+      "value": 0, 
       "initial": null, 
       "name": "Fish tank filter", 
       "pin": 15

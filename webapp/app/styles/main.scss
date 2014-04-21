@@ -13,9 +13,12 @@ nav {
     border-radius: 0;
   }
 
-  .about-link {
-    font-size: 24px;
-    margin: 10px 0;
+  .navbar-nav {
+    li:hover {
+      background: $gray-dark;
+      color: $gray-lighter;
+      cursor: pointer;
+    }
   }
 }
 
